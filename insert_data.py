@@ -1,7 +1,5 @@
 import pandas as pd
 from tables import Movie, Genre, User
-from connect_database import get_engine
-from sqlalchemy.orm import sessionmaker
 
 def get_genres_list(filename):
     genres = []
@@ -267,13 +265,10 @@ def associate_movie_genre(session):
 
     session.commit() 
 
-def set_data():
-    engine = get_engine()
-    Sesstion = sessionmaker(bind=engine)
-    session = Sesstion()
+def set_data(session):
     insert_into_genres("genre.csv", session)
     insert_into_movies("top_movies.csv", session)
     associate_movie_genre(session)
-    session.close()
+    
 
 

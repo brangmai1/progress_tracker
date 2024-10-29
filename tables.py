@@ -1,5 +1,5 @@
 from sqlalchemy import String, Integer, Column, ForeignKey, Float
-from sqlalchemy.orm import declarative_base, relationship, sessionmaker
+from sqlalchemy.orm import declarative_base, relationship
 from connect_database import get_engine
 
 Base = declarative_base()
@@ -74,11 +74,9 @@ class User(Base):
     watching_list = relationship("Movie", secondary="user_movie_watching", back_populates="current_list")
     watched_list = relationship("Movie", secondary="user_movie_watched", back_populates="watched_list")
 
-def set_tables():
+def set_tables(session):
     engine = get_engine()
     Base.metadata.create_all(engine)
-    Session = sessionmaker(bind=engine)
-    session = Session() 
     session.commit()
-    session.close()
+    
    

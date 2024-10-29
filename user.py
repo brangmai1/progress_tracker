@@ -1,5 +1,5 @@
+# user.py
 
-from connect_database import get_engine, make_session, close_session
 import re
 from tables import User
 
@@ -14,8 +14,7 @@ def found_email(email, session):
     return email is not None
 
 # Sign-up function 
-def sign_up():
-    session = make_session()
+def sign_up(session):
     while True:      
         new_username = input("Enter username: ")
         # Check a username format: a username must be a combination of letters and numbers only 
@@ -50,29 +49,24 @@ def sign_up():
     new_user = User(username=new_username, password=new_password, name=new_name, email=new_email)
     session.add(new_user) 
     session.commit()
-    close_session(session)
     return new_user.username
 
 
 # Log-in function 
-def log_in():
-    session = make_session()
+def log_in(session):
     username = input("Enter your username: ").strip()
     user = session.query(User).filter(User.username == username).first()
     
     if not user:
         print(f"User '{username}' does not exist")
-        close_session(session)
         return None
     
     password = input("Enter your password: ").strip()
     if password != user.password:
         print("Incorrect password")
-        close_session(session)
         return None
     
     print(f"Welcome back, {username}!")
-    close_session(session)
     return user.username
 
 

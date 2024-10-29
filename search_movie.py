@@ -1,6 +1,5 @@
+#search_movie.py
 
-from connect_database import get_engine
-from sqlalchemy.orm import sessionmaker
 from tables import Movie, Genre
 import pandas as pd
 
@@ -79,8 +78,7 @@ def search_by_genre(session):
         print(f"'{search_genre}' genre not found.")
 
 # Function to search; search menu
-def search():
-    session = sessionmaker(bind=get_engine())()
+def search(session):
     while True:
         print("-----------------------------------------------------------------")
         print("1. Best 10 Movies")
@@ -95,7 +93,6 @@ def search():
         elif choice == "3":
             search_by_genre(session)
         elif choice == "0":
-            session.close()
             break
         else:
             print("Invalid option! Try again.")
