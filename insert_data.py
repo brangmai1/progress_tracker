@@ -1,45 +1,7 @@
-from sqlalchemy import Table, ForeignKey, Column, Integer, String, Float
-from sqlalchemy.orm import declarative_base, relationship
-from connect_database import get_engine, make_session, close_session
 import pandas as pd
-
-
-# Define a base class and models
-Base = declarative_base()
-
-# Association table for many-to-many relationship between Movie and Genre
-movie_genre_association = Table(
-    "movie_genre", Base.metadata,
-    Column("movie_id", Integer, ForeignKey("movies.id", ondelete="CASCADE"), primary_key=True),
-    Column("genre_id", Integer, ForeignKey("genres.id", ondelete="CASCADE"), primary_key=True)
-)
-
-# # Movie model
-class Movie(Base):
-    __tablename__ = "movies" # table name = movies
-    id = Column(Integer, primary_key=True)
-    title = Column(String(100), nullable=False)
-    description = Column(String(1000))
-    rating = Column(Float)
-    release_year = Column(Integer)
-    # Relationship with Genre through the association table
-    genres = relationship("Genre", secondary=movie_genre_association, back_populates="movies")
-
-    def __repr__(self):
-        return f"movie_id: {self.id}, title: \"{self.title}\", rating: {self.rating}, release year: {self.release_year}"
-
-
-# Genre Model   
-class Genre(Base):
-    __tablename__ = "genres" # table name = genres
-    id = Column(Integer, primary_key=True)
-    genre_type = Column(String(50), unique=True, nullable=False)
-    # Relationship with Movie through the association table
-    movies = relationship("Movie", secondary=movie_genre_association, back_populates="genres")
-
-    def __repr__(self):
-        return f"genre_id: {self.id}, genre_type: {self.genre_type}"
-
+from tables import Movie, Genre, User
+from connect_database import get_engine
+from sqlalchemy.orm import sessionmaker
 
 def get_genres_list(filename):
     genres = []
@@ -60,18 +22,6 @@ def insert_into_movies(movie_data, session):
     for _, row in movies_df.iterrows():
         session.add(Movie(id=int(row.iloc[0]+1), title=row.iloc[1], description=row.iloc[2], rating=float(row.iloc[3]), release_year=int(row.iloc[4])))
     session.commit()
-
-def select_from_genre(session):
-    print("SELECT * FROM genres.........")
-    genres = session.query(Genre).all()
-    for genre in genres:
-        print(genre)
-
-def select_from_movies(session):
-    print("SELECT * FROM movies......")
-    movies = session.query(Movie).all()
-    for movie in movies:
-        print(movie)
 
 def associate_movie_genre(session):
     action = session.query(Genre).filter(Genre.genre_type == "Action").first()
@@ -315,79 +265,15 @@ def associate_movie_genre(session):
     movie_id_99.genres.extend([drama, mystery])
     movie_id_100.genres.extend([crime, mystery, thriller]) 
 
-    session.commit()   
-   
+    session.commit() 
 
-# Create all tables  
-engine = get_engine() 
-Base.metadata.create_all(engine)
-# Create a session to interact with the database
-session = make_session(engine)
-
-# Insert genres data in ORM table
-# csv_file = "genre.csv"
-# insert_into_genres(csv_file, session)
-#select_from_genre(session)
-
-# Insert movies data into ORM table
-# movie_data = "top_movies.csv"
-# insert_into_movies(movie_data, session)
-
-# Query from movies table
-# select_from_movies(session)
-
-# Insert data into movie_genre table
-associate_movie_genre(session)
-
-close_session(session)
-
-
-# action = Genre(id=1, genre_type = "Action")
-# scifi = Genre(id=2, genre_type="Sci-Fi")
-
-# # Insert Data into the database
-# new_movie = Movie(id=1, title="The Lord of the Ring", description="The best movie of all time", rating=9.9, release=2003, genres=[action, scifi])
-# session.add(new_movie)
-# session.commit()
-
-# new_genre = Genre(id=1, genre_type="Action")
-# session.add(new_genre)
-# session.commit()
-
-# Query data from the database
-# Get all movies 
-# movies = session.query(Movie).all()
-# print("Top movies.....")
-# for movie in movies:
-#     print(movie)
-
-# Filter movies by rating
-# high_rated = session.query(Movie).filter(Movie.rating > 9.0).all()
-# print("Highly rated movies.....")
-# print(high_rated)
-
-# Update/modify Data
-# movie = session.query(Movie).filter_by(title="The Lord of the Ring").first()
-# movie.rating = 10
-# session.commit()
-
-# Movies after modification
-# best_movies = session.query(Movie).all()
-# for movie in best_movies:
-#     print(movie)
-
-# Delete data
-# movie_delete = session.query(Movie).filter_by(title="The Lord of the Ring").first()
-# session.delete(movie)
-# session.commit()
-
-# Movies after modification
-# best_movies = session.query(Movie).all()
-# for movie in best_movies:
-#     print(movie)
-
-# genre = session.query(Genre).all()
-# for gen in genre:
-#     print(gen)
+def set_data():
+    engine = get_engine()
+    Sesstion = sessionmaker(bind=engine)
+    session = Sesstion()
+    insert_into_genres("genre.csv", session)
+    insert_into_movies("top_movies.csv", session)
+    associate_movie_genre(session)
+    session.close()
 
 

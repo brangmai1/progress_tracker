@@ -38,6 +38,42 @@ CREATE TABLE movie_genre (
     CONSTRAINT fk_movie FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE
 );
 
+-- DROP TABLE IF EXISTS users;
+-- users table
+CREATE TABLE users (
+	username VARCHAR(25) PRIMARY KEY,
+    password VARCHAR(25) UNIQUE NOT NULL,
+    name VARCHAR(25),
+    email VARCHAR(30)
+);
+
+DROP TABLE IF EXISTS user_movie_to_watch;
+CREATE TABLE user_movie_to_watch (
+	username VARCHAR(25) NOT NULL,
+    movie_id INT NOT NULL,
+    PRIMARY KEY (username, movie_id),
+    CONSTRAINT fk_umtw_username FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE,
+    CONSTRAINT fk_umtow_movie_id FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS user_movie_watching;
+CREATE TABLE user_movie_watching (
+	username VARCHAR(25) NOT NULL,
+    movie_id INT NOT NULL,
+    PRIMARY KEY (username, movie_id),
+    CONSTRAINT fk_umw_username FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE,
+    CONSTRAINT fk_umw_movie_id FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS user_movie_watached;
+CREATE TABLE user_movie_watched (
+	username VARCHAR(25) NOT NULL,
+    movie_id INT NOT NULL,
+    PRIMARY KEY (username, movie_id),
+    CONSTRAINT fk_umwd_username FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE,
+    CONSTRAINT fk_umwd_movie_id FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE
+);
+
 
 
 

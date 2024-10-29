@@ -1,26 +1,45 @@
-import pandas as pd
+from user import sign_up, log_in
+from connect_database import get_engine
+from sqlalchemy.orm import sessionmaker
+from tables import set_tables
+from insert_data import set_data
+   
+# Function to setup initial tables and populate data
+def setup_tables_data():
+    print()
+     # set_tables()
+    # set_data()
 
-genre_raw = "genre.csv"
-def get_genres(filename):
-    genres = []
-    with open(filename, "r") as file:
-        lines = file.readlines()        
-        for item in lines:
-            genres.append(item.strip())
-    return genres
+def setup_user():
+    while True:
+        print("1. Sign Up")
+        print("2. Log In")
+        print("0. Exit")
+        choice = input("Choose an option: ").strip()
 
-# genres = get_genres(genre_raw)
-# for item in genres:
-#     print(item)
+        if choice == '1':
+            print("Signing up...")
+            sign_up()
+        elif choice == '2':
+            success = log_in()
+            if success:
+                break
+        elif choice == '0':
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid option. Try again.")
+def main():
+    print("----------------------------------------------")
+    print("MOVIE BINGE-WATCHING PROGRESS TRACKER PROJECT")
+    print("----------------------------------------------")
+    setup_tables_data()
+    setup_user()
 
-movie_df = pd.read_csv("top_movies.csv")
-for index, row in movie_df.iterrows():
-    id = row.iloc[0]
-    title = row.iloc[1]
-    des = row.iloc[2]
-    rating = row.iloc[3]
-    year = row.iloc[4]
+if __name__ == "__main__":
+    
+    main()
+   
+    
 
-    print(id, title, des, rating, year)
-
-       
+            
