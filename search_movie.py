@@ -21,7 +21,7 @@ def get_movie_df(session):
 # Function to save searched movies
 def collect_movies(sesseion):
     while True:
-        print("-----------------------------------------------------------------")
+        print("-----------------------------------------------------------------------------")
         print("1. Add to watch in the future")
         print("2. Add to currently watching list")
         print("3. Add to watched list")
@@ -40,12 +40,12 @@ def collect_movies(sesseion):
 
 # Function to get top ten most rated movies
 def get_best_movies(session):
-    print("-----------------------------------------------------------------")
+    print("--------------------------------------------------------------------------")
     print("10 BEST MOVIES")
-    print("-----------------------------------------------------------------")
+    print("--------------------------------------------------------------------------")
     movie_df = get_movie_df(session)
     print(movie_df.loc[:9,["id", "title", "rating", "release_year"]])
-    print("-----------------------------------------------------------------")
+    print("--------------------------------------------------------------------------")
     collect_movies(session)    
 
 # Function to search movies by getting a title input
@@ -80,7 +80,7 @@ def search_by_genre(session):
 # Function to search; search menu
 def search(session):
     while True:
-        print("-----------------------------------------------------------------")
+        print("--------------------------------------------------------------------------")
         print("1. Best 10 Movies")
         print("2. Search by Movie Title")
         print("3. Search by Genre")
