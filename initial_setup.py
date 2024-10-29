@@ -1,6 +1,6 @@
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy import String, Integer, Column, Boolean
-from connect_database import get_session
+from connect_database import get_engine, make_session
 from tables import set_tables
 from insert_data import set_data
 
@@ -13,7 +13,10 @@ class SetupStatus(Base):
     setup_completed = Column(Boolean, default=False)
 
 def setup_table_data():
-    session = get_session()
+    engine = get_engine()
+    Base.metadata.create_all(engine)
+    Session = sessionmaker(bind=engine)
+    session = Session()
     status = session.query(SetupStatus).filter_by(name = "initial_setup").first()
 
     if status:
@@ -21,11 +24,12 @@ def setup_table_data():
         return 
     # Set up tables and data to mysql
     print("Setting up tables and data........")
-    set_tables()
-    set_data()
+    set_tables(session)
+    set_data(session)
     setup_status = SetupStatus(name="initial_setup", setup_completed=True)
     session.add(setup_status)
     session.commit()
+    session.close()
 
     
 
