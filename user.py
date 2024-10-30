@@ -49,7 +49,7 @@ def sign_up(session):
     new_user = User(username=new_username, password=new_password, name=new_name, email=new_email)
     session.add(new_user) 
     session.commit()
-    return new_user.username
+    return new_user
 
 
 # Log-in function 
@@ -67,7 +67,7 @@ def log_in(session):
         return None
     
     print(f"Welcome back, {username}!")
-    return user.username
+    return user
 
 
 if __name__ == "__main__":

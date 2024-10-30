@@ -12,7 +12,7 @@ def setup_user(session):
             print("Signing up...")
             user = sign_up(session)
             if user is not None:
-                search(session)
+                search(user, session)
         elif choice == '2':
             user = log_in(session)
             if user is not None:
@@ -25,7 +25,7 @@ def setup_user(session):
 
 
 def profile(user, session):
-    user_profile = session.query(User).filter(User.username == user).first()
+    user_profile = session.query(User).filter(User.username == user.username).first()
     watching_movies = user_profile.watching_list
     future_movies = user_profile.to_watch_list
     watched_movies = user_profile.watched_list
@@ -56,4 +56,4 @@ def profile(user, session):
 
     search_movie = input("Do you want search Movies? Enter 'y' for 'Yes', 'n' for No: ")
     if search_movie.lower() == 'y':
-        search(session)
+        search(user, session)
