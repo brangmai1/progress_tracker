@@ -2,6 +2,7 @@
 
 import re
 from tables import User
+from getpass import getpass
 
 # Function to check Username 
 def found_username(username, session):   
@@ -27,7 +28,7 @@ def sign_up(session):
         else:
             break
     while True:
-        new_password = input("Enter your password: ")
+        new_password = getpass("Enter password: ")
         # Strong password pattern
         #pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
         if not re.match(r"^(?=.*[a-z])[a-zA-Z0-9@$!%*?&]{5,}$", new_password):
@@ -35,9 +36,9 @@ def sign_up(session):
         else:
             break        
 
-    new_name = input("Enter your name: ")
+    new_name = input("Enter name: ")
     while True:
-        new_email = input("Enter your email: ")
+        new_email = input("Enter email: ")
         # Check the user input email is the format of an email
         if not re.match(r"^[a-zA-Z][a-zA-Z0-9_.]+@[a-zA-Z0-9._]+\.[a-zA-Z]{2,}$", new_email):
             print("Invalid email format!")
@@ -54,14 +55,14 @@ def sign_up(session):
 
 # Log-in function 
 def log_in(session):
-    username = input("Enter your username: ").strip()
+    username = input("Enter username: ").strip()
     user = session.query(User).filter(User.username == username).first()
     
     if not user:
         print(f"User '{username}' does not exist")
         return None
     
-    password = input("Enter your password: ").strip()
+    password = getpass("Enter password: ").strip()
     if password != user.password:
         print("Incorrect password")
         return None

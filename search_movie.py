@@ -63,12 +63,12 @@ def collect_movies(user, movie_id, session):
             print(f"Movie id: {movie_id} not found.")
 
 def save_movie():
-    save = input("Do you want to save movie? Enter 'y' for 'Yes', 'n' for 'No':")
+    save = input("Do you want to save movie? y/n :")
     return save.lower() == 'y'
 
 # Function to get top ten most rated movies
 def get_best_movies(user, session):
-    print("--------------------------------------------------------------------------")
+    print("\n--------------------------------------------------------------------------")
     print("10 BEST MOVIES")
     print("--------------------------------------------------------------------------")
     movie_df = get_movie_df(session)
@@ -81,7 +81,7 @@ def get_best_movies(user, session):
         if save_movie():
             movie_id = input("Enter movie id to save it: ")
             collect_movies(user, movie_id, session) 
-        more = input("Do you want to check to more movies? Enter 'y' for 'Yes', 'n' for 'No': ")   
+        more = input("\nDo you want to check more movies? y/n :")   
         if more.lower() == 'y':
             row_start += 10
             row_end += 10
@@ -93,7 +93,7 @@ def get_best_movies(user, session):
 
 # Function to search movies by getting a title input
 def search_by_title(user, session):
-    title = input("Enter the movie title: ").title()
+    title = input("\nEnter the movie title: ").title()
     found_movies = session.query(Movie).filter(Movie.title == title).all()
     if found_movies:
         print("Search Results: ")
@@ -107,7 +107,7 @@ def search_by_title(user, session):
 
 # Function to search movies by getting a genre input
 def search_by_genre(user, session):
-    search_genre = input("Enter a genre: ").title()
+    search_genre = input("\nEnter a genre: ").title()
     genres = session.query(Genre).filter(Genre.genre_type == search_genre).first()
     if genres:
         movies = genres.movies
@@ -117,17 +117,18 @@ def search_by_genre(user, session):
                 print(f"id: {movie.id}, title: {movie.title}, released: {movie.release_year}")
             # Option to add movies into individual list
             if save_movie():
-                movie_id = input("Enter movie id to save it: ")
+                movie_id = input("Enter a movie id to save it: ")
                 collect_movies(user, movie_id, session)    
         else:
             print(f"No movies found for {search_genre} genre.")
     else:
         print(f"'{search_genre}' genre not found.")
 
+
 # Function to search; search menu
 def search(user, session):
     while True:
-        print("--------------------------------------------------------------------------")
+        print("\n--------------------------------------------------------------------------")
         print("1. Best 10 Movies")
         print("2. Search by Movie Title")
         print("3. Search by Genre")
