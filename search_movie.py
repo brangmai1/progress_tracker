@@ -23,25 +23,32 @@ def collect_movies(user, movie_id, session):
     while True:
         movie_to_save = session.query(Movie).filter(Movie.id == movie_id).first()
         if movie_to_save:
+            # User can save movies into three different lists: to watch in the future, watching now or watched.
             print("-----------------------------------------------------------------------------")
             print("1. Add to watch in the future")
             print("2. Add to currently watching list")
             print("3. Add to watched list")
             print("0. Done")
             choice = input("Choose an option: ")
+            # Option to save a movie to the future watch list
             if choice == "1":
+                # Check the movie to save is already on the list
                 if movie_to_save not in user.to_watch_list:
                     user.to_watch_list.append(movie_to_save)
                     print(f"{movie_to_save.title} is dded to the future watching list")
                 else:
                     print(f"{movie_to_save.title} is already on future watch list.")
+            # Option to save a movie to the currently watching list
             elif choice == "2":
+                # Check the movie to save is already on the list
                 if movie_to_save not in user.watching_list:
                     user.watching_list.append(movie_to_save)
                     print(f"{movie_to_save.title} is dded to the future watching list")
                 else:
                     print(f"{movie_to_save.title} is already on the watching list.")
+            # Option to save a movie to the watched list
             elif choice == "3":
+                # Check the movie to save is already on the list
                 if movie_to_save not in user.watched_list:
                     user.watched_list.append(movie_to_save)
                     print(f"{movie_to_save.title} added to the future watching list")
@@ -65,12 +72,24 @@ def get_best_movies(user, session):
     print("10 BEST MOVIES")
     print("--------------------------------------------------------------------------")
     movie_df = get_movie_df(session)
+    row_start = 0
+    row_end = 9
 
-    print(movie_df.loc[:9,["id", "title", "rating", "release_year"]])
-    print("--------------------------------------------------------------------------")
-    if save_movie():
-        movie_id = input("Enter movie id to save it: ")
-        collect_movies(user, movie_id, session)    
+    while True:
+        print(movie_df.loc[row_start:row_end,["id", "title", "rating", "release_year"]])
+        print("--------------------------------------------------------------------------")
+        if save_movie():
+            movie_id = input("Enter movie id to save it: ")
+            collect_movies(user, movie_id, session) 
+        more = input("Do you want to check to more movies? Enter 'y' for 'Yes', 'n' for 'No': ")   
+        if more.lower() == 'y':
+            row_start += 10
+            row_end += 10
+            if row_start > (movie_df.size - 10):
+                print("End of movie list.")
+                break
+        else:
+            break
 
 # Function to search movies by getting a title input
 def search_by_title(user, session):
@@ -124,6 +143,7 @@ def search(user, session):
             break
         else:
             print("Invalid option! Try again.")
+
 
 if __name__ == "__main__":
     search()
