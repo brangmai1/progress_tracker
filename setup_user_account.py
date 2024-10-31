@@ -26,7 +26,7 @@ def setup_user(session):
         else:
             print("Invalid option. Try again.")
 
-
+# User profile function; the landing page for a user
 def profile(user, session):
     user_profile = session.query(User).filter(User.username == user.username).first()
     watching_movies = user_profile.watching_list
