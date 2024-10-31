@@ -87,6 +87,7 @@ def edit_list(user, session):
         print("\nInvalid option! Try again.")
     profile(user, session)
 
+# Function to select user's lists: currently watching, to watch in the future or watched lists
 def select_list(user):
     while True:
         print("1. Currently watching list")
@@ -94,9 +95,6 @@ def select_list(user):
         print("3. Watched list")
         choice = input("Choose an option: ")
      
-        # future_movies = user.to_watch_list
-        # watching_movies = user.watching_list
-        # watched_movies = user.watched_list
         if choice == "1":
             return user.watching_list
         elif choice == "2":

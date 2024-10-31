@@ -4,7 +4,7 @@ from connect_database import make_session
 
 def main():
     print("----------------------------------------------")
-    print("MOVIE WATCHLIST AND PROGRESS TRACKER PROJECT")
+    print("MOVIE PROGRESS TRACKER")
     print("----------------------------------------------")
     # Function to setup initial tables and populate data
     with make_session() as session:

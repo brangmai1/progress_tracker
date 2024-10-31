@@ -61,6 +61,7 @@ def collect_movies(user, movie_id, session):
     else:
         print(f"Movie id: {movie_id} not found.")
 
+# Function asking user to save movies
 def save_movie():
     save = input("Do you want to add movies to your lists? y/n :")
     return save.lower() == 'y'
@@ -154,7 +155,3 @@ def search(user, session):
             break
         else:
             print("Invalid option! Try again.")
-
-
-if __name__ == "__main__":
-    search()
