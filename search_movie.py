@@ -20,47 +20,46 @@ def get_movie_df(session):
 
 # Function to save searched movies
 def collect_movies(user, movie_id, session):
-    while True:
-        movie_to_save = session.query(Movie).filter(Movie.id == movie_id).first()
-        if movie_to_save:
-            # User can save movies into three different lists: to watch in the future, watching now or watched.
-            print("-----------------------------------------------------------------------------")
-            print("1. Add to watch in the future")
-            print("2. Add to currently watching list")
-            print("3. Add to watched list")
-            print("0. Done")
-            choice = input("Choose an option: ")
-            # Option to save a movie to the future watch list
-            if choice == "1":
-                # Check the movie to save is already on the list
-                if movie_to_save not in user.to_watch_list:
-                    user.to_watch_list.append(movie_to_save)
-                    print(f"{movie_to_save.title} is dded to the future watching list")
-                else:
-                    print(f"{movie_to_save.title} is already on future watch list.")
-            # Option to save a movie to the currently watching list
-            elif choice == "2":
-                # Check the movie to save is already on the list
-                if movie_to_save not in user.watching_list:
-                    user.watching_list.append(movie_to_save)
-                    print(f"{movie_to_save.title} is dded to the future watching list")
-                else:
-                    print(f"{movie_to_save.title} is already on the watching list.")
-            # Option to save a movie to the watched list
-            elif choice == "3":
-                # Check the movie to save is already on the list
-                if movie_to_save not in user.watched_list:
-                    user.watched_list.append(movie_to_save)
-                    print(f"{movie_to_save.title} added to the future watching list")
-                else:
-                    print(f"{movie_to_save.title} is already on the watched list.")
-            elif choice == "0":
-                session.commit()
-                break
+    movie_to_save = session.query(Movie).filter(Movie.id == movie_id).first()
+    if movie_to_save:
+        # User can save movies into three different lists: to watch in the future, watching now or watched.
+        print("-----------------------------------------------------------------------------")
+        print("1. Add to watch in the future")
+        print("2. Add to currently watching list")
+        print("3. Add to watched list")
+        print("0. Done")
+        choice = input("Choose an option: ")
+        # Option to save a movie to the future watch list
+        if choice == "1":
+            # Check the movie to save is already on the list
+            if movie_to_save not in user.to_watch_list:
+                user.to_watch_list.append(movie_to_save)
+                print(f"{movie_to_save.title} is added to the future watching list")
             else:
-                print("Invalid option! Try again.")
+                print(f"{movie_to_save.title} is already on future watch list.")
+        # Option to save a movie to the currently watching list
+        elif choice == "2":
+            # Check the movie to save is already on the list
+            if movie_to_save not in user.watching_list:
+                user.watching_list.append(movie_to_save)
+                print(f"{movie_to_save.title} is dded to the future watching list")
+            else:
+                print(f"{movie_to_save.title} is already on the watching list.")
+        # Option to save a movie to the watched list
+        elif choice == "3":
+            # Check the movie to save is already on the list
+            if movie_to_save not in user.watched_list:
+                user.watched_list.append(movie_to_save)
+                print(f"{movie_to_save.title} added to the future watching list")
+            else:
+                print(f"{movie_to_save.title} is already on the watched list.")
+        elif choice == "0":
+            session.commit()
+            return
         else:
-            print(f"Movie id: {movie_id} not found.")
+            print("Invalid option! Try again.")
+    else:
+        print(f"Movie id: {movie_id} not found.")
 
 def save_movie():
     save = input("Do you want to save movie? y/n :")
@@ -70,18 +69,20 @@ def save_movie():
 def get_best_movies(user, session):
     print("\n--------------------------------------------------------------------------")
     print("10 BEST MOVIES")
-    print("--------------------------------------------------------------------------")
+    print("\n--------------------------------------------------------------------------")
     movie_df = get_movie_df(session)
     row_start = 0
     row_end = 9
 
     while True:
+        print("\n--------------------------------------------------------------------------")
         print(movie_df.loc[row_start:row_end,["id", "title", "rating", "release_year"]])
-        print("--------------------------------------------------------------------------")
-        if save_movie():
-            movie_id = input("Enter movie id to save it: ")
+        print("\n--------------------------------------------------------------------------")
+        while save_movie():
+            movie_id = int(input("Enter a movie ID: "))
             collect_movies(user, movie_id, session) 
-        more = input("\nDo you want to check more movies? y/n :")   
+
+        more = input("\nMore movies? y/n :")   
         if more.lower() == 'y':
             row_start += 10
             row_end += 10
@@ -100,7 +101,7 @@ def search_by_title(user, session):
         for movie in found_movies:
             print(f"id: {movie.id}, title: {movie.title}, rating: {movie.rating}, released: {movie.release_year}")
         if save_movie():
-            movie_id = input("Enter movie id to save it: ")
+            movie_id = int(input("Enter movie id to save it: "))
             collect_movies(user, movie_id, session)    
     else:
         print(f"'{title}' not found")
@@ -117,7 +118,7 @@ def search_by_genre(user, session):
                 print(f"id: {movie.id}, title: {movie.title}, released: {movie.release_year}")
             # Option to add movies into individual list
             if save_movie():
-                movie_id = input("Enter a movie id to save it: ")
+                movie_id = int(input("Enter a movie id to save it: "))
                 collect_movies(user, movie_id, session)    
         else:
             print(f"No movies found for {search_genre} genre.")

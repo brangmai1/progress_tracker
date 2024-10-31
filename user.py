@@ -67,7 +67,7 @@ def log_in(session):
         print("Incorrect password")
         return None
     
-    print(f"Welcome back, {username}!")
+    print(f"\nWelcome back, {user.name.title()}!")
     return user
 
 
