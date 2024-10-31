@@ -16,6 +16,17 @@ def found_email(email, session):
 
 # Sign-up function 
 def sign_up(session):
+    new_username = set_username(session)    
+    new_password = set_password() 
+    new_name = input("Enter name: ")
+    new_email = set_email(session)    
+    new_user = User(username=new_username, password=new_password, name=new_name, email=new_email)
+    session.add(new_user) 
+    session.commit()
+    return new_user
+
+# Function to set a unique username
+def set_username(session):
     while True:      
         new_username = input("Enter username: ")
         # Check a username format: a username must be a combination of letters and numbers only 
@@ -27,6 +38,10 @@ def sign_up(session):
             print("Username already taken. Choose another.")
         else:
             break
+    return new_username
+
+# Function to set a new password
+def set_password():
     while True:
         new_password = getpass("Enter password: ")
         # Strong password pattern
@@ -34,9 +49,11 @@ def sign_up(session):
         if not re.match(r"^(?=.*[a-z])[a-zA-Z0-9@$!%*?&]{5,}$", new_password):
             print("Weak password! Use letters, numbers and special characters.")
         else:
-            break        
+            break   
+    return new_password
 
-    new_name = input("Enter name: ")
+# Function to set a nique email
+def set_email(session):
     while True:
         new_email = input("Enter email: ")
         # Check the user input email is the format of an email
@@ -47,11 +64,7 @@ def sign_up(session):
             print("Email already used.")
         else:
             break 
-    new_user = User(username=new_username, password=new_password, name=new_name, email=new_email)
-    session.add(new_user) 
-    session.commit()
-    return new_user
-
+    return new_email
 
 # Log-in function 
 def log_in(session):

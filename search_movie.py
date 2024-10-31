@@ -62,13 +62,13 @@ def collect_movies(user, movie_id, session):
         print(f"Movie id: {movie_id} not found.")
 
 def save_movie():
-    save = input("Do you want to save movie? y/n :")
+    save = input("Do you want to add movies to your lists? y/n :")
     return save.lower() == 'y'
 
 # Function to get top ten most rated movies
 def get_best_movies(user, session):
     print("\n--------------------------------------------------------------------------")
-    print("10 BEST MOVIES")
+    print("BEST MOVIES OF ALL TIME")
     print("\n--------------------------------------------------------------------------")
     movie_df = get_movie_df(session)
     row_start = 0
@@ -82,11 +82,20 @@ def get_best_movies(user, session):
             movie_id = int(input("Enter a movie ID: "))
             collect_movies(user, movie_id, session) 
 
-        more = input("\nMore movies? y/n :")   
-        if more.lower() == 'y':
+        print("\n1. View more movies")
+        print("2. Go back to earlier movie list")
+        print("0. Done")
+        choice = input("Choose option:")   
+        if choice == '1':
             row_start += 10
             row_end += 10
             if row_start > (movie_df.size - 10):
+                print("End of movie list.")
+                break
+        elif choice == '2':
+            row_start -= 10
+            row_end -= 10
+            if row_start < 0:
                 print("End of movie list.")
                 break
         else:
@@ -130,7 +139,7 @@ def search_by_genre(user, session):
 def search(user, session):
     while True:
         print("\n--------------------------------------------------------------------------")
-        print("1. Best 10 Movies")
+        print("1. View Best Movies")
         print("2. Search by Movie Title")
         print("3. Search by Genre")
         print("0. Exit")
