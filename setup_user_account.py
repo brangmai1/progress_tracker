@@ -5,8 +5,7 @@ import sys
 
 def setup_user(session):
     while True:
-        print()
-        print("1. Sign up")
+        print("\n1. Sign up")
         print("2. Sign in")
         print("0. Exit")
         choice = input("Choose an option: ").strip()
@@ -14,8 +13,8 @@ def setup_user(session):
             print("Signing up...")
             user = sign_up(session)
             if user is not None:
-                search(user, session)
                 profile(user, session)
+                search(user, session)
         elif choice == '2':
             user = log_in(session)
             if user is not None:
@@ -29,9 +28,11 @@ def setup_user(session):
 # User profile function; the landing page for a user
 def profile(user, session):
     user_profile = session.query(User).filter(User.username == user.username).first()
+    # Three lists; User's watching, to watch and watched lists
     watching_movies = user_profile.watching_list
     future_movies = user_profile.to_watch_list
     watched_movies = user_profile.watched_list
+
     print("\n-----------------------------------------------------------------------------")
     print("CURRENTLY WATCHING MOVIES")
     print("-----------------------------------------------------------------------------")
@@ -56,7 +57,8 @@ def profile(user, session):
     else:
         for movie in future_movies:
             print(f"id: {movie.id}, title: {movie.title}, genre: {movie.rating}, released: {movie.release_year}")
-    print("\n1. Edit Profile")
+    
+    print("\n1. Manage movie lists")
     print("2. Sign out")
     choice = input("Choose an option: ")
     if choice == "1":
@@ -65,7 +67,7 @@ def profile(user, session):
         print("Goodbye!")
         sys.exit()
 
-
+# Function to modify user's movie lists
 def edit_list(user, session):
     print("\n1. Add movies")
     print("2. Remove movies")
@@ -85,7 +87,7 @@ def edit_list(user, session):
         profile(user, session)
     else:
         print("\nInvalid option! Try again.")
-    profile(user, session)
+    
 
 def select_list(user):
     while True:

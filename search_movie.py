@@ -34,6 +34,7 @@ def collect_movies(user, movie_id, session):
             # Check the movie to save is already on the list
             if movie_to_save not in user.to_watch_list:
                 user.to_watch_list.append(movie_to_save)
+                session.commit()
                 print(f"{movie_to_save.title} is added to the future watching list")
             else:
                 print(f"{movie_to_save.title} is already on future watch list.")
@@ -42,6 +43,7 @@ def collect_movies(user, movie_id, session):
             # Check the movie to save is already on the list
             if movie_to_save not in user.watching_list:
                 user.watching_list.append(movie_to_save)
+                session.commit()
                 print(f"{movie_to_save.title} is dded to the future watching list")
             else:
                 print(f"{movie_to_save.title} is already on the watching list.")
@@ -50,11 +52,11 @@ def collect_movies(user, movie_id, session):
             # Check the movie to save is already on the list
             if movie_to_save not in user.watched_list:
                 user.watched_list.append(movie_to_save)
+                session.commit()
                 print(f"{movie_to_save.title} added to the future watching list")
             else:
                 print(f"{movie_to_save.title} is already on the watched list.")
         elif choice == "0":
-            session.commit()
             return
         else:
             print("Invalid option! Try again.")
@@ -142,7 +144,7 @@ def search(user, session):
         elif choice == "3":
             search_by_genre(user, session)
         elif choice == "0":
-            break
+            return
         else:
             print("Invalid option! Try again.")
 
