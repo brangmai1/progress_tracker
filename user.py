@@ -4,6 +4,8 @@ import re
 from tables import User
 from getpass import getpass
 
+ADMINS = ["brangmai@email.com"]
+
 # Function to check Username 
 def found_username(username, session):   
     user = session.query(User).filter(User.username == username).first()
@@ -21,6 +23,8 @@ def sign_up(session):
     new_name = input("Enter name: ")
     new_email = set_email(session)    
     new_user = User(username=new_username, password=new_password, name=new_name, email=new_email)
+    if new_user.email in ADMINS:
+        new_user.role = 'admin'
     session.add(new_user) 
     session.commit()
     return new_user

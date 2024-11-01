@@ -56,16 +56,43 @@ def profile(user, session):
     else:
         for movie in future_movies:
             print(f"id: {movie.id}, title: {movie.title}, genre: {movie.rating}, released: {movie.release_year}")
-    print("\n1. Edit Profile")
-    print("2. Sign out")
-    choice = input("Choose an option: ")
-    if choice == "1":
-        edit_list(user, session)  
-    else:
-        print("Goodbye!")
-        sys.exit()
+    
+    # Admin's options
+    if user.role == 'admin':
+        print("1. Manage Users")
+        print("2. Edit Profile")
+        print("0. Sign Out")
+        choice = input("Choose an option: ")
+        if choice == "1":
+            print("1. View users")
+            print("2. Delete users")
+            print("0. Done")
+            admin_choice = input("Choose an option: ")
+            if admin_choice == "1":
+                view_all_users(user, session)
+                profile(user, session)
+            elif admin_choice == "2":
+                delete_user(user, session)
+                profile(user, session)
+            else:
+                profile(user, session)
+        elif choice == "2":
+            edit_list(user, session)  
+        else:
+            print("Goodbye!")
+            sys.exit()
+    # User's options
+    elif user.role == 'user':
+        print("\n1. Edit Profile")
+        print("2. Sign Out")
+        choice = input("Choose an option: ")
+        if choice == "1":
+            edit_list(user, session)  
+        else:
+            print("Goodbye!")
+            sys.exit()
 
-
+# Function that a user can manage their accounts
 def edit_list(user, session):
     print("\n1. Add movies")
     print("2. Remove movies")
@@ -142,6 +169,23 @@ def delete(users_list, movie_id, session):
         session.commit()
     else:
         print("Movie not found.")
+
+def view_all_users(user, session):
+    if user.role != 'admin':
+        raise PermissionError("Access Denied: Admins only.")
+    all_users = session.query(User).all()
+    for user in all_users:
+        print(f"username: {user.username}, email: {user.email}")
+
+def delete_user(session):
+    username = input("Enter username to remove: ")
+    user_to_delete = session.query(User).filter(User.username == username).first()
+    if user_to_delete:
+        session.delete(user_to_delete)
+        session.commit()
+    else:
+        print(f"Username: {username} not found.")
+
         
         
 

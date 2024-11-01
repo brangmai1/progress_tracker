@@ -70,6 +70,7 @@ class User(Base):
     password = Column(String (25), nullable=False)
     name = Column(String (25), nullable=False)
     email = Column(String (25), nullable=True)
+    role = Column(String(10), default="user")
     to_watch_list = relationship("Movie", secondary="user_movie_to_watch", back_populates="future_list")
     watching_list = relationship("Movie", secondary="user_movie_watching", back_populates="current_list")
     watched_list = relationship("Movie", secondary="user_movie_watched", back_populates="watched_list")
