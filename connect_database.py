@@ -2,7 +2,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import OperationalError
 
-database_url = "mysql+mysqlconnector://<username>:<password>@localhost/progress_tracker"
 
 # Function to connect to database 
 def get_engine():
