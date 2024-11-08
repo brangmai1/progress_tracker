@@ -6,15 +6,22 @@ from getpass import getpass
 
 ADMINS = ["brangmai@email.com"]
 
-# Function to check Username 
-def found_username(username, session):   
+# Log-in function 
+def log_in(session):
+    username = input("Enter username: ").strip()
     user = session.query(User).filter(User.username == username).first()
-    return user is not None
-
-# Function to check Email
-def found_email(email, session):
-    email = session.query(User).filter(User.email == email).first()
-    return email is not None
+    
+    if not user:
+        print(f"User '{username}' does not exist")
+        return None
+    
+    password = getpass("Enter password: ").strip()
+    if password != user.password:
+        print("Incorrect password")
+        return None
+    
+    print(f"\nWelcome back, {user.name.title()}!")
+    return user
 
 # Sign-up function 
 def sign_up(session):
@@ -28,6 +35,46 @@ def sign_up(session):
     session.add(new_user) 
     session.commit()
     return new_user
+
+def settings(user, session):
+    print("\nAccount settings")
+    print("1. Change password")
+    print("2. Change name")
+    print("3. Change email")
+    choice = input("Chose an option: ")
+    if choice == "1":
+        change_password(user, session)
+    elif choice == "2":
+        change_name(user, session)
+    elif choice == "3":
+        change_email(user, session)
+
+# Function to change the password of an existing user
+def change_password(user, session):
+    user.password = set_password()
+    session.commit()
+    print("Password changed")
+
+# Function to change the name of an existing user
+def change_name(user, session):
+    user.name = input("Enter new name: ")
+    session.commit()
+    print("Name changed")
+
+def change_email(user, session):
+    user.email = set_email(session)
+    session.commit()
+    print("Email changed")
+
+# Function to check Username 
+def found_username(username, session):   
+    user = session.query(User).filter(User.username == username).first()
+    return user is not None
+
+# Function to check Email
+def found_email(email, session):
+    email = session.query(User).filter(User.email == email).first()
+    return email is not None
 
 # Function to set a unique username
 def set_username(session):
@@ -46,14 +93,24 @@ def set_username(session):
 
 # Function to set a new password
 def set_password():
+    password = ""
     while True:
-        new_password = getpass("Enter password: ")
+        if password == "":
+            new_password = getpass("Enter new password: ")
+        else:
+            new_password = getpass("Confirm password: ")
         # Strong password pattern
         #pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
         if not re.match(r"^(?=.*[a-z])[a-zA-Z0-9@$!%*?&]{5,}$", new_password):
             print("Weak password! Use letters, numbers and special characters.")
         else:
-            break   
+            if password == "":
+                password = new_password
+            else:
+                if password != new_password:
+                    print("Passwords do not match")
+                else:
+                    break   
     return new_password
 
 # Function to set a nique email
@@ -70,22 +127,8 @@ def set_email(session):
             break 
     return new_email
 
-# Log-in function 
-def log_in(session):
-    username = input("Enter username: ").strip()
-    user = session.query(User).filter(User.username == username).first()
-    
-    if not user:
-        print(f"User '{username}' does not exist")
-        return None
-    
-    password = getpass("Enter password: ").strip()
-    if password != user.password:
-        print("Incorrect password")
-        return None
-    
-    print(f"\nWelcome back, {user.name.title()}!")
-    return user
+
+
 
 
     

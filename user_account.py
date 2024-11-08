@@ -1,4 +1,4 @@
-from user import sign_up, log_in 
+from account_setting import sign_up, log_in, settings
 from search_movie import search_movies
 from tables import User, Movie
 import sys
@@ -25,48 +25,65 @@ def setup_user(session):
         else:
             print("Invalid option. Try again.")
 
+
 # User profile function; the landing page for a user
 def profile_setting(user, session):    
     # Admin's options
     if user.role == 'admin':
-        print("\n1. View movie lists")
-        print("2. Manage Users")
-        print("3. Edit my movie list")
-        print("0. Sign Out")
-        choice = input("Choose an option: ")
-        if choice == "1":
-            display_movie_lists(user, session)
-        elif choice == "2":
-            print("1. View users")
-            print("2. Delete users")
-            print("0. Done")
-            admin_choice = input("Choose an option: ")
-            if admin_choice == "1":
-                view_all_users(session)
-                profile_setting(user, session)
-            elif admin_choice == "2":
-                delete_user(session)
-                profile_setting(user, session)
-            else:
-                profile_setting(user, session)
-        elif choice == "3":
-            edit_list(user, session)  
-        else:
-            print("Goodbye!")
-            sys.exit()
-    # User's options
-    elif user.role == 'user':
-        print("\n1. View movie lists")
-        print("2. Edit my movie list")
-        print("0. Sign Out")
-        choice = input("Choose an option: ")
-        if choice == "1":
-            display_movie_lists(user, session)
-        elif choice == "2":
-            edit_list(user, session)  
-        else:
-            print("Goodbye!")
-            sys.exit()
+        admin_account(user, session)
+    else:
+        user_account(user, session)
+
+# Admin account menu
+def admin_account(user, session):
+    print("\n1. View movie lists")
+    print("2. Manage Users")
+    print("3. Edit my movie list")
+    print("4. Account settings")
+    print("0. Sign Out")
+    choice = input("Choose an option: ")
+    if choice == "1":
+        display_movie_lists(user, session)
+    elif choice == "2":
+        print("1. View users")
+        print("2. Delete users")
+        print("0. Done")
+        admin_choice = input("Choose an option: ")
+        if admin_choice == "1":
+            view_all_users(session)
+            # profile_setting(user, session)
+        elif admin_choice == "2":
+            delete_user(session)
+            # profile_setting(user, session)
+        # else:
+        #     # profile_setting(user, session)
+        #     pass
+    elif choice == "3":
+        edit_list(user, session)  
+    elif choice == "4":
+        settings(user, session)
+    elif choice == "0":
+        print("Goodbye!")
+        sys.exit()
+    profile_setting(user, session)
+        
+ # User account menu   
+def user_account(user, session):  
+    print("\n1. View movie lists")
+    print("2. Edit my movie list")
+    print("3. Account setting")
+    print("0. Sign Out")
+    choice = input("Choose an option: ")
+    if choice == "1":
+        display_movie_lists(user, session)
+    elif choice == "2":
+        edit_list(user, session)  
+    elif choice == "3":
+        settings(user, session)
+    elif choice == "0":
+        print("Goodbye!")
+        sys.exit()
+    profile_setting(user, session)
 
 # Display user's movie lists
 def display_movie_lists(user, session):

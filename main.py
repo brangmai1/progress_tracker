@@ -1,5 +1,5 @@
 from initial_setup import setup_table_data
-from setup_user_account import setup_user
+from user_account import setup_user
 from connect_database import make_session
 
 def main():

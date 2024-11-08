@@ -3,6 +3,8 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import OperationalError
 
 
+database_url = "mysql+mysqlconnector://root:a3n5D4ng1@localhost/progress_tracker"
+
 # Function to connect to database 
 def get_engine():
     # Create an engine and connect to MySQ
