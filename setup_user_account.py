@@ -32,7 +32,7 @@ def profile_setting(user, session):
     if user.role == 'admin':
         print("\n1. View movie lists")
         print("2. Manage Users")
-        print("3. Edit Profile")
+        print("3. Edit my movie list")
         print("0. Sign Out")
         choice = input("Choose an option: ")
         if choice == "1":
@@ -43,10 +43,10 @@ def profile_setting(user, session):
             print("0. Done")
             admin_choice = input("Choose an option: ")
             if admin_choice == "1":
-                view_all_users(user, session)
+                view_all_users(session)
                 profile_setting(user, session)
             elif admin_choice == "2":
-                delete_user(user, session)
+                delete_user(session)
                 profile_setting(user, session)
             else:
                 profile_setting(user, session)
@@ -195,15 +195,13 @@ def delete(users_list, movie_id, session):
     else:
         print("Movie not found.")
 
-def view_all_users(user, session):
-    if user.role != 'admin':
-        raise PermissionError("Access Denied: Admins only.")
+def view_all_users(session):
     all_users = session.query(User).all()
-    for user in all_users:
-        print(f"username: {user.username}, email: {user.email}")
+    for index, user in enumerate(all_users):
+        print(f"{index + 1}. Username: {user.username}, Email: {user.email}")
 
 def delete_user(session):
-    username = input("Enter username to remove: ")
+    username = input("Username to remove: ")
     user_to_delete = session.query(User).filter(User.username == username).first()
     if user_to_delete:
         session.delete(user_to_delete)
