@@ -4,6 +4,8 @@ import re
 from tables import User
 from getpass import getpass
 
+ADMINS = ["brangmai@email.com"]
+
 # Function to check Username 
 def found_username(username, session):   
     user = session.query(User).filter(User.username == username).first()
@@ -16,6 +18,19 @@ def found_email(email, session):
 
 # Sign-up function 
 def sign_up(session):
+    new_username = set_username(session)    
+    new_password = set_password() 
+    new_name = input("Enter name: ")
+    new_email = set_email(session)    
+    new_user = User(username=new_username, password=new_password, name=new_name, email=new_email)
+    if new_user.email in ADMINS:
+        new_user.role = 'admin'
+    session.add(new_user) 
+    session.commit()
+    return new_user
+
+# Function to set a unique username
+def set_username(session):
     while True:      
         new_username = input("Enter username: ")
         # Check a username format: a username must be a combination of letters and numbers only 
@@ -27,6 +42,10 @@ def sign_up(session):
             print("Username already taken. Choose another.")
         else:
             break
+    return new_username
+
+# Function to set a new password
+def set_password():
     while True:
         new_password = getpass("Enter password: ")
         # Strong password pattern
@@ -34,9 +53,11 @@ def sign_up(session):
         if not re.match(r"^(?=.*[a-z])[a-zA-Z0-9@$!%*?&]{5,}$", new_password):
             print("Weak password! Use letters, numbers and special characters.")
         else:
-            break        
+            break   
+    return new_password
 
-    new_name = input("Enter name: ")
+# Function to set a nique email
+def set_email(session):
     while True:
         new_email = input("Enter email: ")
         # Check the user input email is the format of an email
@@ -47,11 +68,7 @@ def sign_up(session):
             print("Email already used.")
         else:
             break 
-    new_user = User(username=new_username, password=new_password, name=new_name, email=new_email)
-    session.add(new_user) 
-    session.commit()
-    return new_user
-
+    return new_email
 
 # Log-in function 
 def log_in(session):
@@ -71,59 +88,4 @@ def log_in(session):
     return user
 
 
-if __name__ == "__main__":
-    print()
-    # while True:
-    #     print("1. Sign Up")
-    #     print("2. Log In")
-    #     print("0. Exit")
-    #     choice = input("Choose an option: ").strip()
-
-    #     if choice == '1':
-    #         sign_up()
-    #     elif choice == '2':
-    #         success = log_in()
-    #         if success:
-    #             break
-    #     elif choice == '0':
-    #         print("Goodbye!")
-    #         break
-    #     else:
-    #         print("Invalid option. Try again.")
-
-# Base = declarative_base()
-
-# # Relationship table between users table and movies table, many-to-many relationship
-# class UserMovieToWatch(Base):
-#     __tablename__ = "user_movie_to_watch"  
-#     id = Column(Integer, primary_key=True)  
-#     username = Column(String(25), ForeignKey("users.username", ondelete="CASCADE"))
-#     movie_id = Column(Integer, ForeignKey("movies.id", ondelete="CASCADE"))
-
-
-# # # Relationship table between users table and movies table, many-to-many relationship
-# class UserMovieWatching(Base):
-#     __tablename__ = "user_movie_watching"
-#     id = Column(Integer, primary_key=True)
-#     username = Column(String(25), ForeignKey("users.username", ondelete="CASCADE"))
-#     movie_id = Column(Integer, ForeignKey("movies.id", ondelete="CASCADE"))
-
-
-# # # Relationship table between users table and movies table, many-to-many relationship
-# class UserMovieWatched(Base):    
-#     __tablename__ = "user_movie_watched"
-#     id = Column(Integer, primary_key=True)
-#     username = Column(String(25), ForeignKey("users.username", ondelete="CASCADE"))
-#     movie_id = Column(Integer, ForeignKey("movies.id", ondelete="CASCADE"))
-
-
-# # User class
-# class User(Base):
-#     __tablename__ = "users"
-#     username = Column(String (15), primary_key=True)
-#     password = Column(String (25), nullable=False)
-#     name = Column(String (25), nullable=False)
-#     email = Column(String (25), nullable=True)
-#     to_watch_list = relationship("Movie", secondary="user_movie_to_watch", back_populates="future_list")
-#     watching_list = relationship("Movie", secondary="user_movie_watching", back_populates="current_list")
-#     watched_list = relationship("Movie", secondary="user_movie_watched", back_populates="watched_list")
+    

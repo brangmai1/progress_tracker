@@ -1,5 +1,5 @@
 from user import sign_up, log_in 
-from search_movie import search
+from search_movie import search_movies
 from tables import User, Movie
 import sys
 
@@ -13,12 +13,12 @@ def setup_user(session):
             print("Signing up...")
             user = sign_up(session)
             if user is not None:
-                profile(user, session)
-                search(user, session)
+                search_movies(user, session)
+                profile_setting(user, session)
         elif choice == '2':
             user = log_in(session)
             if user is not None:
-                profile(user, session)
+                profile_setting(user, session)
         elif choice == '0':
             print("Goodbye!")
             break
@@ -26,48 +26,90 @@ def setup_user(session):
             print("Invalid option. Try again.")
 
 # User profile function; the landing page for a user
-def profile(user, session):
+def profile_setting(user, session):    
+    # Admin's options
+    if user.role == 'admin':
+        print("\n1. View movie lists")
+        print("2. Manage Users")
+        print("3. Edit my movie list")
+        print("0. Sign Out")
+        choice = input("Choose an option: ")
+        if choice == "1":
+            display_movie_lists(user, session)
+        elif choice == "2":
+            print("1. View users")
+            print("2. Delete users")
+            print("0. Done")
+            admin_choice = input("Choose an option: ")
+            if admin_choice == "1":
+                view_all_users(session)
+                profile_setting(user, session)
+            elif admin_choice == "2":
+                delete_user(session)
+                profile_setting(user, session)
+            else:
+                profile_setting(user, session)
+        elif choice == "3":
+            edit_list(user, session)  
+        else:
+            print("Goodbye!")
+            sys.exit()
+    # User's options
+    elif user.role == 'user':
+        print("\n1. View movie lists")
+        print("2. Edit my movie list")
+        print("0. Sign Out")
+        choice = input("Choose an option: ")
+        if choice == "1":
+            display_movie_lists(user, session)
+        elif choice == "2":
+            edit_list(user, session)  
+        else:
+            print("Goodbye!")
+            sys.exit()
+
+# Display user's movie lists
+def display_movie_lists(user, session):
     user_profile = session.query(User).filter(User.username == user.username).first()
     # Three lists; User's watching, to watch and watched lists
     watching_movies = user_profile.watching_list
     future_movies = user_profile.to_watch_list
     watched_movies = user_profile.watched_list
 
+    # Print movies that are on the watching list.
     print("\n-----------------------------------------------------------------------------")
     print("CURRENTLY WATCHING MOVIES")
     print("-----------------------------------------------------------------------------")
+    
     if not watching_movies:
-        print("No movies currently watching.")
+        print("No movies listed.")
     else:
         for movie in watching_movies:
             print(f"id: {movie.id}, title: {movie.title}, genre: {movie.rating}, released: {movie.release_year}")
+    
+    # Print movies that are on the future list.
     print("\n-----------------------------------------------------------------------------")
     print("MOVIES TO WATCH IN THE FUTURE")
     print("-----------------------------------------------------------------------------")
     if not future_movies:
-        print("No movies to watch in the future.")
-    else:
-        for movie in future_movies:
-            print(f"id: {movie.id}, title: {movie.title}, genre: {movie.rating}, released: {movie.release_year}")
-    print("\n-----------------------------------------------------------------------------")
-    print("WATHCHED MOVIES")
-    print("-----------------------------------------------------------------------------")
-    if not watched_movies:
-        print("No watched movies listed.")
+        print("No movies listed.")
     else:
         for movie in future_movies:
             print(f"id: {movie.id}, title: {movie.title}, genre: {movie.rating}, released: {movie.release_year}")
     
-    print("\n1. Manage movie lists")
-    print("2. Sign out")
-    choice = input("Choose an option: ")
-    if choice == "1":
-        edit_list(user, session)  
+    # Print movies that are on the watched list.
+    print("\n-----------------------------------------------------------------------------")
+    print("WATHCHED MOVIES")
+    print("-----------------------------------------------------------------------------")
+    if not watched_movies:
+        print("No movies listed.")
     else:
-        print("Goodbye!")
-        sys.exit()
+        for movie in watched_movies:
+            print(f"id: {movie.id}, title: {movie.title}, genre: {movie.rating}, released: {movie.release_year}")
+    profile_setting(user, session)
 
-# Function to modify user's movie lists
+
+# Function that a user can manage their accounts
 def edit_list(user, session):
     print("\n1. Add movies")
     print("2. Remove movies")
@@ -76,7 +118,7 @@ def edit_list(user, session):
     choice = input("Choose an option: ").strip()
     if choice == "1":
         # Search movies to add to the lists
-        search(user, session)
+        search_movies(user, session)
     elif choice == "2":
         # Delete movie from one of users' lists
         remove_movie(user, session)
@@ -84,11 +126,12 @@ def edit_list(user, session):
         # Update movie from one of users' lists
         update_list(user, session)        
     elif choice == "0":
-        profile(user, session)
+        profile_setting(user, session)
     else:
         print("\nInvalid option! Try again.")
-    
+    profile_setting(user, session)
 
+# Function to select user's lists: currently watching, to watch in the future or watched lists
 def select_list(user):
     while True:
         print("1. Currently watching list")
@@ -96,9 +139,6 @@ def select_list(user):
         print("3. Watched list")
         choice = input("Choose an option: ")
      
-        # future_movies = user.to_watch_list
-        # watching_movies = user.watching_list
-        # watched_movies = user.watched_list
         if choice == "1":
             return user.watching_list
         elif choice == "2":
@@ -116,9 +156,17 @@ def update_list(user, session):
     movie_id_to_update = int(input("Movie ID to update: "))
     print("\nMovie list to update to:")
     update_movie_to = select_list(user)
-    delete(update_movie_from, movie_id_to_update, session)
-    add_movie(update_movie_to, movie_id_to_update, session)
-    print(f"\nMovie ID: {movie_id_to_update} is updated.")
+    movie = session.query(Movie).filter(Movie.id == movie_id_to_update).first()
+    if not movie or movie not in update_movie_from:
+        print(f"Movie ID {movie_id_to_update} not found")
+    else:
+        update_movie_from.remove(movie)
+        if movie in update_movie_to:
+            print(f"Movie ID {movie_id_to_update} is already on the list")
+        else:
+            update_movie_to.append(movie)   
+            session.commit()
+            print(f"\nMovie ID: {movie_id_to_update} is updated.")
 
 
 # Function to add a movie to the user's one of three lists: future watch, watching and watched lists.
@@ -146,6 +194,21 @@ def delete(users_list, movie_id, session):
         session.commit()
     else:
         print("Movie not found.")
+
+def view_all_users(session):
+    all_users = session.query(User).all()
+    for index, user in enumerate(all_users):
+        print(f"{index + 1}. Username: {user.username}, Email: {user.email}")
+
+def delete_user(session):
+    username = input("Username to remove: ")
+    user_to_delete = session.query(User).filter(User.username == username).first()
+    if user_to_delete:
+        session.delete(user_to_delete)
+        session.commit()
+    else:
+        print(f"Username: {username} not found.")
+
         
         
 

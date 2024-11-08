@@ -45,8 +45,8 @@ class Movie(Base):
     release_year = Column(Integer)
     # Relationship with Genre through the association table
     genres = relationship("Genre", secondary="movie_genre", back_populates="movies")
-    future_list = relationship("User", secondary="user_movie_to_watch", back_populates="to_watch_list")
     current_list = relationship("User", secondary="user_movie_watching", back_populates="watching_list")
+    future_list = relationship("User", secondary="user_movie_to_watch", back_populates="to_watch_list")
     watched_list = relationship("User", secondary="user_movie_watched", back_populates="watched_list")
 
     def __repr__(self):
@@ -70,8 +70,9 @@ class User(Base):
     password = Column(String (25), nullable=False)
     name = Column(String (25), nullable=False)
     email = Column(String (25), nullable=True)
-    to_watch_list = relationship("Movie", secondary="user_movie_to_watch", back_populates="future_list")
+    role = Column(String(10), default="user")
     watching_list = relationship("Movie", secondary="user_movie_watching", back_populates="current_list")
+    to_watch_list = relationship("Movie", secondary="user_movie_to_watch", back_populates="future_list")
     watched_list = relationship("Movie", secondary="user_movie_watched", back_populates="watched_list")
 
 def set_tables(session):

@@ -24,22 +24,13 @@ def collect_movies(user, movie_id, session):
     if movie_to_save:
         # User can save movies into three different lists: to watch in the future, watching now or watched.
         print("-----------------------------------------------------------------------------")
-        print("1. Add to watch in the future")
-        print("2. Add to currently watching list")
+        print("1. Add to currently watching list")
+        print("2. Add to watch in the future")
         print("3. Add to watched list")
         print("0. Done")
         choice = input("Choose an option: ")
         # Option to save a movie to the future watch list
         if choice == "1":
-            # Check the movie to save is already on the list
-            if movie_to_save not in user.to_watch_list:
-                user.to_watch_list.append(movie_to_save)
-                session.commit()
-                print(f"{movie_to_save.title} is added to the future watching list")
-            else:
-                print(f"{movie_to_save.title} is already on future watch list.")
-        # Option to save a movie to the currently watching list
-        elif choice == "2":
             # Check the movie to save is already on the list
             if movie_to_save not in user.watching_list:
                 user.watching_list.append(movie_to_save)
@@ -47,6 +38,17 @@ def collect_movies(user, movie_id, session):
                 print(f"{movie_to_save.title} is dded to the future watching list")
             else:
                 print(f"{movie_to_save.title} is already on the watching list.")
+            
+        # Option to save a movie to the currently watching list
+        elif choice == "2":
+            # Check the movie to save is already on the list
+            if movie_to_save not in user.to_watch_list:
+                user.to_watch_list.append(movie_to_save)
+                session.commit()
+                print(f"{movie_to_save.title} is added to the future watching list")
+            else:
+                print(f"{movie_to_save.title} is already on future watch list.")
+            
         # Option to save a movie to the watched list
         elif choice == "3":
             # Check the movie to save is already on the list
@@ -63,14 +65,15 @@ def collect_movies(user, movie_id, session):
     else:
         print(f"Movie id: {movie_id} not found.")
 
+# Function asking user to save movies
 def save_movie():
-    save = input("Do you want to save movie? y/n :")
+    save = input("Do you want to add movies to your lists? y/n :")
     return save.lower() == 'y'
 
 # Function to get top ten most rated movies
 def get_best_movies(user, session):
     print("\n--------------------------------------------------------------------------")
-    print("10 BEST MOVIES")
+    print("BEST MOVIES OF ALL TIME")
     print("\n--------------------------------------------------------------------------")
     movie_df = get_movie_df(session)
     row_start = 0
@@ -84,11 +87,20 @@ def get_best_movies(user, session):
             movie_id = int(input("Enter a movie ID: "))
             collect_movies(user, movie_id, session) 
 
-        more = input("\nMore movies? y/n :")   
-        if more.lower() == 'y':
+        print("\n1. View more movies")
+        print("2. Go back to earlier movie list")
+        print("0. Done")
+        choice = input("Choose option:")   
+        if choice == '1':
             row_start += 10
             row_end += 10
             if row_start > (movie_df.size - 10):
+                print("End of movie list.")
+                break
+        elif choice == '2':
+            row_start -= 10
+            row_end -= 10
+            if row_start < 0:
                 print("End of movie list.")
                 break
         else:
@@ -129,10 +141,10 @@ def search_by_genre(user, session):
 
 
 # Function to search; search menu
-def search(user, session):
+def search_movies(user, session):
     while True:
         print("\n--------------------------------------------------------------------------")
-        print("1. Best 10 Movies")
+        print("1. View Best Movies")
         print("2. Search by Movie Title")
         print("3. Search by Genre")
         print("0. Exit")
@@ -147,7 +159,3 @@ def search(user, session):
             return
         else:
             print("Invalid option! Try again.")
-
-
-if __name__ == "__main__":
-    search()
