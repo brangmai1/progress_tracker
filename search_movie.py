@@ -24,37 +24,41 @@ def collect_movies(user, movie_id, session):
     if movie_to_save:
         # User can save movies into three different lists: to watch in the future, watching now or watched.
         print("-----------------------------------------------------------------------------")
-        print("1. Add to watch in the future")
-        print("2. Add to currently watching list")
+        print("1. Add to currently watching list")
+        print("2. Add to watch in the future")
         print("3. Add to watched list")
         print("0. Done")
         choice = input("Choose an option: ")
         # Option to save a movie to the future watch list
         if choice == "1":
             # Check the movie to save is already on the list
-            if movie_to_save not in user.to_watch_list:
-                user.to_watch_list.append(movie_to_save)
-                print(f"{movie_to_save.title} is added to the future watching list")
-            else:
-                print(f"{movie_to_save.title} is already on future watch list.")
-        # Option to save a movie to the currently watching list
-        elif choice == "2":
-            # Check the movie to save is already on the list
             if movie_to_save not in user.watching_list:
                 user.watching_list.append(movie_to_save)
+                session.commit()
                 print(f"{movie_to_save.title} is dded to the future watching list")
             else:
                 print(f"{movie_to_save.title} is already on the watching list.")
+            
+        # Option to save a movie to the currently watching list
+        elif choice == "2":
+            # Check the movie to save is already on the list
+            if movie_to_save not in user.to_watch_list:
+                user.to_watch_list.append(movie_to_save)
+                session.commit()
+                print(f"{movie_to_save.title} is added to the future watching list")
+            else:
+                print(f"{movie_to_save.title} is already on future watch list.")
+            
         # Option to save a movie to the watched list
         elif choice == "3":
             # Check the movie to save is already on the list
             if movie_to_save not in user.watched_list:
                 user.watched_list.append(movie_to_save)
+                session.commit()
                 print(f"{movie_to_save.title} added to the future watching list")
             else:
                 print(f"{movie_to_save.title} is already on the watched list.")
         elif choice == "0":
-            session.commit()
             return
         else:
             print("Invalid option! Try again.")
@@ -137,7 +141,7 @@ def search_by_genre(user, session):
 
 
 # Function to search; search menu
-def search(user, session):
+def search_movies(user, session):
     while True:
         print("\n--------------------------------------------------------------------------")
         print("1. View Best Movies")
