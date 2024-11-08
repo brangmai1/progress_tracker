@@ -108,6 +108,7 @@ def display_movie_lists(user, session):
             print(f"id: {movie.id}, title: {movie.title}, genre: {movie.rating}, released: {movie.release_year}")
     profile_setting(user, session)
 
+
 # Function that a user can manage their accounts
 def edit_list(user, session):
     print("\n1. Add movies")
@@ -155,9 +156,17 @@ def update_list(user, session):
     movie_id_to_update = int(input("Movie ID to update: "))
     print("\nMovie list to update to:")
     update_movie_to = select_list(user)
-    delete(update_movie_from, movie_id_to_update, session)
-    add_movie(update_movie_to, movie_id_to_update, session)
-    print(f"\nMovie ID: {movie_id_to_update} is updated.")
+    movie = session.query(Movie).filter(Movie.id == movie_id_to_update).first()
+    if not movie or movie not in update_movie_from:
+        print(f"Movie ID {movie_id_to_update} not found")
+    else:
+        update_movie_from.remove(movie)
+        if movie in update_movie_to:
+            print(f"Movie ID {movie_id_to_update} is already on the list")
+        else:
+            update_movie_to.append(movie)   
+            session.commit()
+            print(f"\nMovie ID: {movie_id_to_update} is updated.")
 
 
 # Function to add a movie to the user's one of three lists: future watch, watching and watched lists.
