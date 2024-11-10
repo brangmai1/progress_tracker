@@ -13,9 +13,9 @@ Welcome to the Movie Progress Tracker! This application helps users manage and t
 ## Features
 #### User Accounts: Users can sign up and log in with a unique username.
 #### Movie Tracking: Organize movies into three categories:
-	- To Watch: Movies the user plans to watch.
-	- Watching: Movies the user is currently watching.
-	- Watched: Movies the user has finished.
+- To Watch: Movies the user plans to watch.
+- Watching: Movies the user is currently watching.
+- Watched: Movies the user has finished.
 #### Admin Dashboard: An admin account can view and manage user accounts and movie lists.
 #### Search by Movie Title: Find movies by movie titles.
 #### Search by Genre: Find movies by specific genres.
@@ -28,32 +28,35 @@ Welcome to the Movie Progress Tracker! This application helps users manage and t
 
 ## Installation 
 ### Prerequisities
-	- Python 3.x
-	_ MySQL (or an alternative SQL-Compatible database)
+- Python 3.x
+_ MySQL (or an alternative SQL-Compatible database)
 
 ### Steps 
-	1. Clone this repository:
+1. Clone this repository:
 
 		- git clone https://github.com/yourusername/movie-progress-tracker.git
 		- cd movie-progress-tracker
 
-	2. Install dependencies:
-		pip install -r requirements.txt
+2. Install dependencies:
+
+		- pip install -r requirements.txt
 	
-	3. Set up your MySQL databaseL
-		_ Create a new MySQL database name movie_tracker
-		- Update the database connection details in connect_database.py to match your MySQL setup.
+4. Set up your MySQL databaseL
+	_ Create a new MySQL database name movie_progress_tracker
+	- Update the database connection details in connect_database.py to match your MySQL setup.
 
 ## Usage 
 ### Running the Application
-	1. Start the main application:
-		python3 main.py
-	2. Sign up as a user or sign in to an existing account.
-	3. User Features: Once signed in, you can:
-		- Add movies to your To Watch, Watching, or Watched lists.
-		- Update status or delete movies from your movie lists.
-		- View movie lists and track your watching progress.
-		- Search movies by movie or genre.
+1. Start the main application:
+
+   		- python3 main.py
+   
+2. Sign up as a user or sign in to an existing account.
+3. User Features: Once signed in, you can:
+- Add movies to your To Watch, Watching, or Watched lists.
+- Update status or delete movies from your movie lists.
+- View movie lists and track your watching progress.
+- Search movies by movie or genre.
 
 ## Project Structure
 
