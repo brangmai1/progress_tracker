@@ -28,27 +28,29 @@ Welcome to the Movie Progress Tracker! This application helps users manage and t
 
 ## Installation 
 ### Prerequisities
-
 - Python 3.x
 _ MySQL (or an alternative SQL-Compatible database)
 
 ### Steps 
 1. Clone this repository:
 
-	- git clone https://github.com/yourusername/movie-progress-tracker.git
-	- cd movie-progress-tracker
+		- git clone https://github.com/yourusername/movie-progress-tracker.git
+		- cd movie-progress-tracker
 
 2. Install dependencies:
-	- pip install -r requirements.txt
+
+		- pip install -r requirements.txt
 	
-3. Set up your MySQL databaseL
+4. Set up your MySQL databaseL
 	_ Create a new MySQL database name movie_progress_tracker
 	- Update the database connection details in connect_database.py to match your MySQL setup.
 
 ## Usage 
 ### Running the Application
 1. Start the main application:
-	 - python3 main.py
+
+   		- python3 main.py
+   
 2. Sign up as a user or sign in to an existing account.
 3. User Features: Once signed in, you can:
 - Add movies to your To Watch, Watching, or Watched lists.
@@ -58,14 +60,14 @@ _ MySQL (or an alternative SQL-Compatible database)
 
 ## Project Structure
 
-movie-progress-tracker/
-├── connect_database.py       # Database connection setup
-├── initial_setup.py          # Setup tables and initial data
-├── insert_data.py		      # Insert initial data to the database
-├── tables.py                 # ORM models for Users, Movies, Genres, etc.
-├── setup_user_account.py     # User account setup                 
-├── main.py                   # Entry point to run the application
-└── README.md                 # Project documentation
+	movie-progress-tracker/
+	├── connect_database.py       # Database connection setup
+	├── initial_setup.py          # Setup tables and initial data
+	├── insert_data.py		      # Insert initial data to the database
+	├── tables.py                 # ORM models for Users, Movies, Genres, etc.
+	├── setup_user_account.py     # User account setup                 
+	├── main.py                   # Entry point to run the application
+	└── README.md                 # Project documentation
 
 ## Future Improvements
 - Movie Recommendations: Recommend movies based on the user's genre preferences. 
