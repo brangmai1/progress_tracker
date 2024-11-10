@@ -88,43 +88,39 @@ def user_account(user, session):
 # Display user's movie lists
 def display_movie_lists(user, session):
     user_profile = session.query(User).filter(User.username == user.username).first()
-    # Three lists; User's watching, to watch and watched lists
     watching_movies = user_profile.watching_list
     future_movies = user_profile.to_watch_list
     watched_movies = user_profile.watched_list
-
-    # Print movies that are on the watching list.
+    # Functions to print the three lists; User's watching, to watch and watched lists
     print("\n-----------------------------------------------------------------------------")
     print("CURRENTLY WATCHING MOVIES")
     print("-----------------------------------------------------------------------------")
-    
-    if not watching_movies:
-        print("No movies listed.")
-    else:
-        for movie in watching_movies:
-            print(f"id: {movie.id}, title: {movie.title}, genre: {movie.rating}, released: {movie.release_year}")
-    
+    # Print movies that are on the watching list.
+    print_movies(watching_movies)
+
     # Print movies that are on the future list.
     print("\n-----------------------------------------------------------------------------")
     print("MOVIES TO WATCH IN THE FUTURE")
     print("-----------------------------------------------------------------------------")
-    if not future_movies:
-        print("No movies listed.")
-    else:
-        for movie in future_movies:
-            print(f"id: {movie.id}, title: {movie.title}, genre: {movie.rating}, released: {movie.release_year}")
-    
+    print_movies(future_movies)
+
     # Print movies that are on the watched list.
     print("\n-----------------------------------------------------------------------------")
     print("WATHCHED MOVIES")
     print("-----------------------------------------------------------------------------")
-    if not watched_movies:
-        print("No movies listed.")
-    else:
-        for movie in watched_movies:
-            print(f"id: {movie.id}, title: {movie.title}, genre: {movie.rating}, released: {movie.release_year}")
+    print_movies(watched_movies)
+    
+    # Function to back to the profile setting
     profile_setting(user, session)
 
+def print_movies(movie_list):
+    # Print movies that are on the watching list.
+    if not movie_list:
+        print("No movies listed.")
+    else:
+        for movie in movie_list:
+            print(f"id: {movie.id}, title: {movie.title}, genre: {movie.rating}, released: {movie.release_year}")
+    
 
 # Function that a user can manage their accounts
 def edit_list(user, session):
@@ -170,6 +166,7 @@ def update_list(user, session):
     # Update movies from one of users' lists
     print("\nMovie list to update from:")
     update_movie_from = select_list(user)
+    print_movies(update_movie_from)
     movie_id_to_update = int(input("Movie ID to update: "))
     print("\nMovie list to update to:")
     update_movie_to = select_list(user)
@@ -199,6 +196,7 @@ def add_movie(users_list, movie_id, session):
 def remove_movie(user, session):
     print("\nMovie list to remove from:")
     movie_list = select_list(user)
+    print_movies(movie_list)
     movie_id_to_delete = int(input("Movie ID to delete: "))
     delete(movie_list, movie_id_to_delete, session)
     print(f"\nMovie ID: {movie_id_to_delete} is removed.")
