@@ -41,15 +41,9 @@ _ MySQL (or an alternative SQL-Compatible database)
 
 		- pip install -r requirements.txt
 	
-<<<<<<< Updated upstream
-4. Set up your MySQL databaseL
-	_ Create a new MySQL database name movie_progress_tracker
-	- Update the database connection details in connect_database.py to match your MySQL setup.
-=======
-	3. Set up your MySQL databaseL
-		_ Create a new MySQL database name movie_progress_tracker
-		- Update the database connection details in connect_database.py to match your MySQL setup.
->>>>>>> Stashed changes
+3. Set up your MySQL database
+- Create a new MySQL database name movie_progress_tracker
+- Update the database connection details in connect_database.py to match your MySQL setup.
 
 ## Usage 
 ### Running the Application

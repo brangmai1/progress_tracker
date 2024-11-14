@@ -41,6 +41,7 @@ def settings(user, session):
     print("1. Change password")
     print("2. Change name")
     print("3. Change email")
+    print("0. Done")
     choice = input("Chose an option: ")
     if choice == "1":
         change_password(user, session)

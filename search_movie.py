@@ -147,7 +147,7 @@ def search_movies(user, session):
         print("1. View Best Movies")
         print("2. Search by Movie Title")
         print("3. Search by Genre")
-        print("0. Exit")
+        print("0. Back")
         choice = input("Choose an option: ")
         if choice == "1":
             get_best_movies(user, session)
