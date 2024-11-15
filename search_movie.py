@@ -87,8 +87,8 @@ def get_best_movies(user, session):
             movie_id = int(input("Enter a movie ID: "))
             collect_movies(user, movie_id, session) 
 
-        print("\n1. View more movies")
-        print("2. Go back to earlier movie list")
+        print("\n1. More")
+        print("2. Back")
         print("0. Done")
         choice = input("Choose option:")   
         if choice == '1':

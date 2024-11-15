@@ -1,5 +1,5 @@
 from account_setting import sign_up, log_in, settings
-from search_movie import search_movies
+from search_movie import search_movies, get_best_movies
 from tables import User, Movie
 import sys
 
@@ -54,13 +54,26 @@ def profile_setting(user, session):
             print("1. View users")
             print("2. Delete users")
             print("0. Done")
-            admin_choice = input("Choose an option: ")
-            if admin_choice == "1":
+            admin_user_choice = input("Choose an option: ")
+            if admin_user_choice == "1":
                 view_all_users(session)            
-            elif admin_choice == "2":
+            elif admin_user_choice == "2":
                 delete_user(session)    
         elif admin_manage_choice == "2":
-            pass
+            print("1. View movies")
+            print("2. Edit movies")
+            print("3. Add new movies")
+            print("4. Delete movies")
+            print("0. Done")
+            admin_movie_choice = input("Choose an option: ")
+            if admin_movie_choice == "1":
+                view_movies(user, session)
+            elif admin_movie_choice == "2":
+                edit_movies(user, session)
+            elif admin_movie_choice == "3":
+                add_new_movies(user, session)
+            elif admin_movie_choice == "4":
+                delete_movies(user, session)
     elif choice == "0":
         print("Goodbye!")
         sys.exit()
@@ -163,6 +176,17 @@ def update_list(user, session):
             update_movie_to.append(movie)   
             session.commit()
             print(f"\nMovie ID: {movie_id_to_update} is updated.")
+            if update_movie_to == user.watched_list:
+                rate_mavies(movie)
+
+# Function to let the users to rate movies they finish watching
+def rate_mavies(movie):
+    print("\nRate the movie you watched.")
+    print("Enter a number between 1 and 5")
+    print("1 for least and 5 for most favorite movie")
+    user_rated_score = int(input("Choose an option: "))
+    if user_rated_score in [1, 2, 3, 4, 5]:
+        print("Your rating has been recorded.")
 
 
 # Function to add a movie to the user's one of three lists: future watch, watching and watched lists.
@@ -205,6 +229,30 @@ def delete_user(session):
         session.commit()
     else:
         print(f"Username: {username} not found.")
+
+def view_movies(user, session):
+    get_best_movies(user, session)
+
+def edit_movies(user, session):
+    pass
+
+def add_new_movies(user, session):
+    pass
+
+def delete_movies(user, session):
+    movie_id = int(input("Enter movie ID to delete: "))
+    movie = session.query(Movie).filter(Movie.id == movie_id).first()
+    if movie:
+        password = input("Enter your password: ")
+        if password == user.password:
+            session.remove(movie)
+            session.commit()
+        else:
+            print("Passwords do not match")
+
+    else:
+        print("Movie does not exist.")
+
 
         
         
