@@ -28,7 +28,7 @@ Welcome to the Movie Progress Tracker! This application helps users manage and t
 
 ## Installation 
 ### Prerequisities
-- Python 3.x
+- python_version >= 3.13
 _ MySQL (or an alternative SQL-Compatible database)
 
 ### Steps 
@@ -49,7 +49,7 @@ _ MySQL (or an alternative SQL-Compatible database)
 ### Running the Application
 1. Start the main application:
 
-   		- python3 main.py
+   		- python main.py
    
 2. Sign up as a user or sign in to an existing account.
 3. User Features: Once signed in, you can:
