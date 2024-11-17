@@ -11,15 +11,17 @@ Welcome to the Movie Progress Tracker! This application helps users manage and t
 - Future Improvements
 
 ## Features
-#### User Accounts: Users can sign up and log in with a unique username.
-#### Movie Tracking: Organize movies into three categories:
-- To Watch: Movies the user plans to watch.
-- Watching: Movies the user is currently watching.
-- Watched: Movies the user has finished.
-#### Admin Dashboard: An admin account can view and manage user accounts and movie lists.
-#### Search by Movie Title: Find movies by movie titles.
-#### Search by Genre: Find movies by specific genres.
-#### Password Protection: Secure user login with password masking.
+#### User Accounts: Users can create accounts and log in securely with a unique username and password.
+#### Movie Tracking: manage movies across three categories:
+- Watching: Movies the user is currently watching
+- To Watch: Movies the user plans to watch
+- Watched: Movies the user has finished watching
+#### Movie List Management: Easily add, update or remove movies from any tracking category.
+#### Account settings: Update profile details, including passwords, names, and email addresses.
+#### Admin Dashboard: An admin account can monitor and manage user accounts and their movie lists.
+#### Search by Title: Quickly locate movies using their titles.
+#### Search by Genre: Discover movies base on specific genres.
+#### Password Protection: Ensure secure login with password masking during input.
 
 ## Tech Stack
 #### Backend: Python, SQLAlchemy ORM
@@ -28,8 +30,8 @@ Welcome to the Movie Progress Tracker! This application helps users manage and t
 
 ## Installation 
 ### Prerequisities
-- Python 3.x
-_ MySQL (or an alternative SQL-Compatible database)
+- python_version >= 3.13
+- MySQL (or an alternative SQL-Compatible database)
 
 ### Steps 
 1. Clone this repository:
@@ -49,7 +51,7 @@ _ MySQL (or an alternative SQL-Compatible database)
 ### Running the Application
 1. Start the main application:
 
-   		- python3 main.py
+   		- python main.py
    
 2. Sign up as a user or sign in to an existing account.
 3. User Features: Once signed in, you can:

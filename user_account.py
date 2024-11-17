@@ -1,6 +1,7 @@
 from account_setting import sign_up, log_in, settings
 from search_movie import search_movies, get_best_movies
 from tables import User, Movie
+from getpass import getpass
 import sys
 
 def setup_user(session):
@@ -69,9 +70,9 @@ def profile_setting(user, session):
             if admin_movie_choice == "1":
                 view_movies(user, session)
             elif admin_movie_choice == "2":
-                edit_movies(user, session)
+                edit_movies(session)
             elif admin_movie_choice == "3":
-                add_new_movies(user, session)
+                add_new_movies(session)
             elif admin_movie_choice == "4":
                 delete_movies(user, session)
     elif choice == "0":
@@ -181,7 +182,9 @@ def update_list(user, session):
 
 # Function to let the users to rate movies they finish watching
 def rate_mavies(movie):
-    print("\nRate the movie you watched.")
+    print("\n-----------------------------------------------------------------------------")
+    print("RATE THIS MOVIE")
+    print("-----------------------------------------------------------------------------")
     print("Enter a number between 1 and 5")
     print("1 for least and 5 for most favorite movie")
     user_rated_score = int(input("Choose an option: "))
@@ -219,7 +222,8 @@ def delete(users_list, movie_id, session):
 def view_all_users(session):
     all_users = session.query(User).all()
     for index, user in enumerate(all_users):
-        print(f"{index + 1}. Username: {user.username}, Email: {user.email}")
+        print(f"{index + 1}. Username: {user.username}, Name: {user.name}, Email: {user.email}, role: {user.role}")
+
 
 def delete_user(session):
     username = input("Username to remove: ")
@@ -233,19 +237,60 @@ def delete_user(session):
 def view_movies(user, session):
     get_best_movies(user, session)
 
-def edit_movies(user, session):
-    pass
-
-def add_new_movies(user, session):
-    pass
-
-def delete_movies(user, session):
-    movie_id = int(input("Enter movie ID to delete: "))
-    movie = session.query(Movie).filter(Movie.id == movie_id).first()
+# Function that allows admins to update movie from the movie database
+def edit_movies(session):
+    movie_title_to_update = input("Enter movie title: ")
+    movie = session.query(Movie).filter(Movie.title == movie_title_to_update).first()    
     if movie:
-        password = input("Enter your password: ")
+        print("\n1. Change title")
+        print("2. Edit description")
+        print("3. Update rating")
+        print("4. Change released year")
+        print("0. Done")
+        option = input("Choose an option: ")
+        match option:
+            case "1":
+                title = input("New title: ")
+                movie.title = title
+                session.commit()
+            case "2":
+                description = input("Enter new description: ")
+                movie.description = description
+                session.commit()
+            case "3":
+                rating = float(input("Enter new rating: "))
+                movie.rating = rating
+                session.commit()
+            case "4":
+                released_year = int(input("Enter released_year: "))
+                movie.release_year = released_year
+                session.commit()
+    else:
+        print("Movie '{movie_title_to_update}' does not exist in the movie data.")
+    
+# Function that allows admins to add new movie to the movie database
+def add_new_movies(session):
+    title = input("Title: ")
+    movie = session.query(Movie).filter(Movie.title == title).first()
+    if not movie:
+        description = input("Description: ")
+        year = int(input("Released year: ") )
+        new_movie = Movie(title=title, description=description, rating=0.0, release_year= year)
+        session.add(new_movie)
+        session.commit()
+        print(f"Movie title '{title}' is added to the movie data.")
+    else:
+        print(f"Movie title '{title}' is already in the movie data.")
+    
+
+# Function that allows admin to delete a movie from the movie database with admin password 
+def delete_movies(user, session):
+    title = input("Enter movie title: ")
+    movie = session.query(Movie).filter(Movie.title == title).first()
+    if movie:
+        password = getpass("Enter your password: ")
         if password == user.password:
-            session.remove(movie)
+            session.delete(movie)
             session.commit()
         else:
             print("Passwords do not match")
