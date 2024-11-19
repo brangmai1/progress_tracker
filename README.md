@@ -36,16 +36,16 @@ Welcome to the Movie Progress Tracker! This application helps users manage and t
 ### Steps 
 1. Clone this repository:
 
-		- git clone https://github.com/yourusername/movie-progress-tracker.git
-		- cd movie-progress-tracker
+		- git clone https://github.com/Future-Horizons-Python-Sept-2024/pep-progress-tracker-brangmai1.git
+		- cd pep-progress-tracker-brangmai1
 
 2. Install dependencies:
 
 		- pip install -r requirements.txt
 	
 3. Set up your MySQL database
-- Create a new MySQL database name movie_progress_tracker
-- Update the database connection details in connect_database.py to match your MySQL setup.
+	- Create a new MySQL database name movie_progress_tracker
+	- Update the database connection details in connect_database.py to match your MySQL setup.
 
 ## Usage 
 ### Running the Application
@@ -53,12 +53,12 @@ Welcome to the Movie Progress Tracker! This application helps users manage and t
 
    		- python main.py
    
-2. Sign up as a user or sign in to an existing account.
+2. Sign up as a new user or sign in to an existing account.
 3. User Features: Once signed in, you can:
-- Add movies to your To Watch, Watching, or Watched lists.
-- Update status or delete movies from your movie lists.
-- View movie lists and track your watching progress.
-- Search movies by movie or genre.
+	- Add movies to your To Watch, Watching, or Watched lists.
+	- Update status or delete movies from your movie lists.
+	- View movie lists and track your watching progress.
+	- Search movies by movie or genre.
 
 ## Project Structure
 
