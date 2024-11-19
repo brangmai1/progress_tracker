@@ -65,7 +65,7 @@ Welcome to the Movie Progress Tracker! This application helps users manage and t
 	movie-progress-tracker/
 	├── connect_database.py       # Database connection setup
 	├── initial_setup.py          # Setup tables and initial data
-	├── insert_data.py		      # Insert initial data to the database
+	├── insert_data.py	      # Insert initial data to the database
 	├── tables.py                 # ORM models for Users, Movies, Genres, etc.
 	├── setup_user_account.py     # User account setup                 
 	├── main.py                   # Entry point to run the application
