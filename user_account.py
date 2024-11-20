@@ -31,7 +31,7 @@ def setup_user(session):
 def profile_setting(user, session):    
     print("\n1. Search movies")
     print("2. View my movie lists")    
-    print("3. Edit my movie list")
+    print("3. Edit my movie lists")
     print("4. Account settings")
     if user.role == "admin":
         print("5. Admin settings")
