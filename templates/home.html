@@ -1,0 +1,153 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- Header Section -->
+<!-- <header>
+    <img src="{{ url_for('static', filename='images/lawn.jpeg') }}" alt="Header Image" class="header-image">
+</header> -->
+
+<div class="site-name text-primary text-center bg-light bg-gradient p-4">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <h1 class="text-dark">Movie Progress Tracker</h1>    
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <form action="/logout" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-secondary btn-sm">
+                                Logout
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="container mt-5">
+    <h1 class="text-enter">Search Movies</h1>
+    <form action="{{ url_for('search')}}" method="get" class="mt-4">
+        <div class="input-group">
+            <select name="search_type" class="form-select" required>
+                <option value="title" selected>Title</option>
+                <option value="genre">Genre</option>
+                <option value="highest_rated">Highest Rated</option>
+            </select>
+            <input type="text" class="form-control" name="query" placeholder="Enter your search">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+</div>
+<div class="text-dark text-center m-5 p-2">
+    <h4>Trending Movies</h4>    
+</div>
+<div class="container mt-5">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Rating</th>
+                <th>Released Year</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for movie in movies %}
+            <tr>
+                <td>{{ movie.id }}</td>
+                <td>{{ movie.title }}</td>
+                <td>{{ movie.rating }}</td>
+                <td>{{ movie.release_year }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<section class="bg-light bg-gradient p-5">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-md border-0">
+                <h5>Currently watching Movies</h5>
+                <div class="container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-start">
+                            {% if currently_watching_movies %}
+                                {% for movie in currently_watching_movies %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ movie.title }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="2">No movies currently being watched.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>                    
+                </div>
+            </div>
+            <div class="col-md border-0">
+                <h5>Planned to Watch Movies</h5>
+                <div class="container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                            </tr>
+                        </thead>
+                        <tbody  class="text-start">
+                            {% if planned_watching_movies %}
+                                {% for movie in planned_watching_movies %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ movie.title }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="2">No movies planned to watch.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md border-0">
+                <h5>Watched Movies</h5>
+                <div class="container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-start">
+                            {% if watched_movies %}
+                                {% for movie in watched_movies %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ movie.title }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="2">No movies on watched movie list.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
