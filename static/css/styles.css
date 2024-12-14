@@ -1,0 +1,22 @@
+body {
+    font-family: Arial, Helvetica, sans-serif; 
+    margin: 0;
+    padding: 0;
+    background-color: dark;
+    color: black;
+}
+
+header img {
+    width: 100%; /* Make the image span the full width of the page */
+    height: auto; /* Keep the aspect ratio */
+}
+.header {
+    background-image: url("../static/images/header.jpeg");
+    background-size: cover; /* Make the image cover the entire div */
+    background-position: center; /* Center the image */
+    height: 300px; /* Adjust height as needed */
+    width: 100%; /* Full width */
+}
+h1, h3, h4, h5 {
+    font-weight: bold;
+}

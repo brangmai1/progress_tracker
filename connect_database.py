@@ -19,12 +19,19 @@ def get_engine():
 # Function returns session 
 def make_session():
     engine = get_engine()
-    Session = sessionmaker(bind=engine)
+    Session = sessionmaker(bind=engine)    
     return Session()
 
-# Function to close session if it is open 
-def close_session(session):
-    if session.is_active:
-        session.close()
-    else:
-        print("Session is inactive or closed.")
+# def make_session():
+#     engine = create_engine(database_url)
+#     # engine = get_engine()
+#     session = sessionmaker(bind=engine)    
+#     try:
+#         yield session
+#         session.commit() # Commit changes
+#     except Exception as e:
+#         session.rollback() # Rollback on error
+#         raise e
+#     finally:
+#         session.close()
+
