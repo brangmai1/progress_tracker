@@ -83,19 +83,37 @@ def home():
 @app.route("/search", methods=["GET"])
 def search():
     search_type = request.args.get("search_type")
-    query = request.args.get("query", "").title()
-    movies = []
+    query = request.args.get("query", "").strip().title()
+
+    # Get the current page number from the query parameters - default is 1
+    page = request.args.get("page", 1, type=int)
+    movies_per_page = 20
+
     with make_session() as db_session:
         if search_type == "title":
-            movies = db_session.query(Movie).filter(Movie.title.ilike(f"%{query}%")).all()
+            movies_query = db_session.query(Movie).filter(Movie.title.ilike(f"%{query}%"))
         elif search_type == "genre":
             genre = db_session.query(Genre).filter(Genre.genre_type.ilike(f"%{query}%")).first()
-            if genre and hasattr(genre, 'movies'):  # Check if genre.movies relationship exists
-                movies = genre.movies
-        elif search_type == "highest_rated":
-            movies_df = get_movie_df(db_session)
-            movies = movies_df.head(10).to_dict(orient="records")
-    return render_template("search_results.html", movies=movies, search_type=search_type)
+            if genre:
+                # Convert list of movies to a query object
+                movies_query = db_session.query(Movie).filter(Movie.id.in_([movie.id for movie in genre.movies]))
+            else:
+                movies_query = db_session.query(Movie).filter(False)  # Empty query
+        else:
+            # movies_df = get_movie_df(db_session)
+            # movies = movies_df.head(10).to_dict(orient="records")
+            movies_query = db_session.query(Movie)
+
+        # Fetch total number of movies for pagination
+        total_movies = movies_query.count()
+        # Calculate the offset
+        offset = (page - 1) * movies_per_page
+        # Fetch the movies for the current page
+        movies = movies_query.limit(movies_per_page).offset(offset).all()
+        # Calculate total pages for the front-end pagination
+        total_pages = (total_movies + movies_per_page - 1) // movies_per_page
+    
+    return render_template("search.html", movies=movies, search_type=search_type, page=page, total_pages=total_pages, query=query)
 
 
 if __name__ == "__main__":

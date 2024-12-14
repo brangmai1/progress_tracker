@@ -1,7 +1,9 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif; 
     margin: 0;
     padding: 0;
+    background-color: dark;
+    color: black;
 }
 
 header img {
@@ -15,7 +17,6 @@ header img {
     height: 300px; /* Adjust height as needed */
     width: 100%; /* Full width */
 }
-
-main {
-    padding: 20px;
+h1, h3, h4, h5 {
+    font-weight: bold;
 }

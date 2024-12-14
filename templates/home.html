@@ -5,67 +5,74 @@
     <img src="{{ url_for('static', filename='images/lawn.jpeg') }}" alt="Header Image" class="header-image">
 </header> -->
 
-<div class="site-name text-primary text-center bg-light bg-gradient p-4">
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container-fluid">
-            <h1 class="text-dark">Movie Progress Tracker</h1>    
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <form action="/logout" method="POST" class="d-inline">
-                            <button type="submit" class="btn btn-secondary btn-sm">
-                                Logout
-                            </button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
+<div class="site-name text-primary text-center bg-dark bg-gradient p-4">
+    <div class="container">
+        <h1 class="text-white">Movie Progress Tracker</h1>
+        <div class="container justify-content-right">
+            <nav class="navbar navbar-expand-lg navbar-light">    
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <form action="/logout" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-secondary btn-sm">
+                                    Logout
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
         </div>
-    </nav>
-</div>
-<div class="container mt-5">
-    <h1 class="text-enter">Search Movies</h1>
-    <form action="{{ url_for('search')}}" method="get" class="mt-4">
-        <div class="input-group">
-            <select name="search_type" class="form-select" required>
-                <option value="title" selected>Title</option>
-                <option value="genre">Genre</option>
-                <option value="highest_rated">Highest Rated</option>
-            </select>
-            <input type="text" class="form-control" name="query" placeholder="Enter your search">
-            <button type="submit" class="btn btn-primary">Search</button>
-        </div>
-    </form>
-</div>
-<div class="text-dark text-center m-5 p-2">
-    <h4>Trending Movies</h4>    
-</div>
-<div class="container mt-5">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Rating</th>
-                <th>Released Year</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for movie in movies %}
-            <tr>
-                <td>{{ movie.id }}</td>
-                <td>{{ movie.title }}</td>
-                <td>{{ movie.rating }}</td>
-                <td>{{ movie.release_year }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    </div>
 </div>
 <section class="bg-light bg-gradient p-5">
-    <div class="container text-center">
+    <div class="text-dark text-center">
+        <h3>Trending Movies</h3>    
+    </div>
+    <div class="container mt-3">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Rating</th>
+                    <th>Released Year</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for movie in movies %}
+                <tr>
+                    <td>{{ movie.id }}</td>
+                    <td>{{ movie.title }}</td>
+                    <td>{{ movie.rating }}</td>
+                    <td>{{ movie.release_year }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="container mt-5">
+        <h5 class="text-enter">Search Movies</h5>
+        <form action="{{ url_for('search')}}" method="get" class="mt-4">
+            <div class="input-group">                
+                <select name="search_type" class="form-select" required>
+                    <option value="title" selected>Title</option>
+                    <option value="genre">Genre</option>
+                    <option value="highest_rated">Highest Rated</option>
+                </select>            
+                <input type="text" class="form-control" name="query" placeholder="Enter your search">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+    </div>
+</section>
+<section class="bg-dark p-5">
+    <div class="container text-center text-light">
+        <div class="container">
+            <h3>My Movie Lists</h3>
+        </div>
         <div class="row">
-            <div class="col-md border-0">
+            <div class="col-md rounded-2 bg-light text-dark m-3 p=3">
                 <h5>Currently watching Movies</h5>
                 <div class="container">
                     <table class="table">
@@ -92,7 +99,7 @@
                     </table>                    
                 </div>
             </div>
-            <div class="col-md border-0">
+            <div class="col-md rounded-2 bg-light text-dark m-3 p=3">
                 <h5>Planned to Watch Movies</h5>
                 <div class="container">
                     <table class="table">
@@ -119,7 +126,7 @@
                     </table>
                 </div>
             </div>
-            <div class="col-md border-0">
+            <div class="col-md rounded-2 bg-light text-dark m-3 p=3">
                 <h5>Watched Movies</h5>
                 <div class="container">
                     <table class="table">
@@ -147,6 +154,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="container text-start text-white mt-5">
+        <p>All rights reserved.</p>
     </div>
 </section>
 
