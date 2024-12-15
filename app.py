@@ -32,11 +32,11 @@ def login():
             flash("Invalid credentials. Please try again.")
             return redirect(url_for("login"))
         
-@app.route("/logout", methods=["GET","POST"])
+@app.route("/logout", methods=["POST"])
 def logout():
     session.clear() # Clear Flask session
     flash("Logged out seuccessfully.")
-    return redirect(url_for("login"))
+    return redirect(url_for("index"))
 
         
 @app.route("/signup", methods=["GET", "POST"])
@@ -57,7 +57,7 @@ def signup():
                 new_user.role = "admin"
             db_session.add(new_user)
             db_session.commit()
-
+            session["username"] = username
             flash("Sign-up successful!")
             return redirect((url_for("home")))
         
