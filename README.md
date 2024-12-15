@@ -44,8 +44,15 @@ Welcome to the Movie Progress Tracker! This application helps users manage and t
 		- pip install -r requirements.txt
 	
 3. Set up your MySQL database
-	- Create a new MySQL database name movie_progress_tracker
-	- Update the database connection details in connect_database.py to match your MySQL setup.
+	- Create a new MySQL database name on MySQLWorkbench or your favorite DBMS.
+	- Add .env file to the project, outside the static or templates folders.
+	- Add the following key-value pairs to the .env file, and update the values with your own information.
+		DB_NAME=my_database
+		DB_USER=my_user
+		DB_PASSWORD=my_password
+		DB_HOST=localhost
+		DB_PORT=3306
+
 
 ## Usage 
 ### Running the Application
