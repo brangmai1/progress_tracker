@@ -87,7 +87,7 @@ def search():
 
     # Get the current page number from the query parameters - default is 1
     page = request.args.get("page", 1, type=int)
-    movies_per_page = 20
+    movies_per_page = 15
 
     with make_session() as db_session:
         if search_type == "title":
@@ -111,9 +111,21 @@ def search():
         # Fetch the movies for the current page
         movies = movies_query.limit(movies_per_page).offset(offset).all()
         # Calculate total pages for the front-end pagination
-        total_pages = (total_movies + movies_per_page - 1) // movies_per_page
-    
+        total_pages = (total_movies + movies_per_page - 1) // movies_per_page    
     return render_template("search.html", movies=movies, search_type=search_type, page=page, total_pages=total_pages, query=query)
+
+@app.route("/movie/<int:movie_id>", methods=["GET"])
+def movie_details(movie_id):
+    with make_session() as db_session:
+        movie = db_session.query(Movie).filter(Movie.id == movie_id).first()
+        # If movie not found, return an error page
+        if not movie:
+            return "<h3>Movie not found</h3>", 404
+
+        # Pass the referer URL (previous page) to the template
+        previous_page = request.referrer # Capture the referring page URL    
+        # Pass the movie details to the template
+        return render_template("movie_details.html", movie=movie, previous_page=previous_page)
 
 
 if __name__ == "__main__":

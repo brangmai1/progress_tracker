@@ -22,6 +22,9 @@
                     <td>{{ movie.title }}</td>
                     <td>{{ movie.rating }}</td>
                     <td>{{ movie.release_year }}</td>
+                    <td>
+                        <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="btn btn-info btn-sm">View Details</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

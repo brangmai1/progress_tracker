@@ -5,9 +5,9 @@
     <img src="{{ url_for('static', filename='images/lawn.jpeg') }}" alt="Header Image" class="header-image">
 </header> -->
 
-<div class="site-name text-primary text-center bg-gradient p-4">
+<div class="site-name text-primary text-center bg-dark bg-gradient p-4">
     <div class="container">
-        <h1 class="text-dark">Movie Progress Tracker</h1>
+        <h1 class="text-white">Movie Progress Tracker</h1>
         <div class="container justify-content-right">
             <nav class="navbar navbar-expand-lg navbar-light">    
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -46,6 +46,11 @@
                     <td>{{ movie.title }}</td>
                     <td>{{ movie.rating }}</td>
                     <td>{{ movie.release_year }}</td>
+                    <td>
+                        <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="btn btn-info btn-sm">
+                            View Details
+                        </a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

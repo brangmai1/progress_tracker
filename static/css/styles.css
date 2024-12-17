@@ -3,7 +3,6 @@ body {
     margin: 0;
     padding: 0;
     background-color: dark;
-    color: black;
 }
 
 header img {
@@ -11,7 +10,7 @@ header img {
     height: auto; /* Keep the aspect ratio */
 }
 .headerbackground {
-    background-color: burlywood;
+    /* background-color: burlywood; */
     background-image: url("../static/images/header.jpeg"); /* Path to your image */
     background-size: cover; /* Scale the image to cover the header */
     background-position: center; /* Center the image */
