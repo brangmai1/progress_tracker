@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-dark text-white">
+            <h2>{{ movie.title }}</h2>
+        </div>
+        <div class="card-body">
+            <!-- <p><srong>Genre:</srong> {{ movie.genres.genre_type }}</p> -->
+            <p><strong>Description:</strong>{{ movie.description }}</p>
+            <p><strong>Rating:</strong>{{ movie.rating }}</p>
+            <p><strong>Released Year:</strong>{{ movie.release_year }}</p>
+        </div>
+        <div class="card-footer">
+            {% if previous_page %}
+                <a href="{{ previous_page }}" class="btn btn-secondary">Back</a>
+            {% else %}
+                <a href="{{ url_for('home') }}" class="btn btn-secondary">Back to Home</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

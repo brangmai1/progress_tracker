@@ -3,20 +3,33 @@ body {
     margin: 0;
     padding: 0;
     background-color: dark;
-    color: black;
 }
 
 header img {
     width: 100%; /* Make the image span the full width of the page */
     height: auto; /* Keep the aspect ratio */
 }
-.header {
-    background-image: url("../static/images/header.jpeg");
-    background-size: cover; /* Make the image cover the entire div */
+.headerbackground {
+    /* background-color: burlywood; */
+    background-image: url("../static/images/header.jpeg"); /* Path to your image */
+    background-size: cover; /* Scale the image to cover the header */
     background-position: center; /* Center the image */
-    height: 300px; /* Adjust height as needed */
-    width: 100%; /* Full width */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    height: 200px; /* Set the height of the header */
+    display: flex; /* Center content vertically and horizontally */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white; /* Ensure text contrasts with the image */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Add shadow to make text readable */
+    margin: 0; /* Remove default margin */
+}
+.site-name {
+    background-color: burlywood;
 }
 h1, h3, h4, h5 {
     font-weight: bold;
+}
+.hidden {
+    display: none;
 }

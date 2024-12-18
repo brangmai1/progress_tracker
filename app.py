@@ -32,11 +32,11 @@ def login():
             flash("Invalid credentials. Please try again.")
             return redirect(url_for("login"))
         
-@app.route("/logout", methods=["GET","POST"])
+@app.route("/logout", methods=["POST"])
 def logout():
     session.clear() # Clear Flask session
     flash("Logged out seuccessfully.")
-    return redirect(url_for("login"))
+    return redirect(url_for("index"))
 
         
 @app.route("/signup", methods=["GET", "POST"])
@@ -57,14 +57,14 @@ def signup():
                 new_user.role = "admin"
             db_session.add(new_user)
             db_session.commit()
-
+            session["username"] = username
             flash("Sign-up successful!")
             return redirect((url_for("home")))
         
     # Render the sign up form
     return render_template("signup.html")
 
-@app.route("/home", methods=["GET"])
+@app.route("/home", methods=["GET", "POST"])
 def home():
     username = session.get("username")
     if not username:
@@ -87,7 +87,7 @@ def search():
 
     # Get the current page number from the query parameters - default is 1
     page = request.args.get("page", 1, type=int)
-    movies_per_page = 20
+    movies_per_page = 15
 
     with make_session() as db_session:
         if search_type == "title":
@@ -111,10 +111,47 @@ def search():
         # Fetch the movies for the current page
         movies = movies_query.limit(movies_per_page).offset(offset).all()
         # Calculate total pages for the front-end pagination
-        total_pages = (total_movies + movies_per_page - 1) // movies_per_page
-    
+        total_pages = (total_movies + movies_per_page - 1) // movies_per_page    
     return render_template("search.html", movies=movies, search_type=search_type, page=page, total_pages=total_pages, query=query)
 
+@app.route("/movie/<int:movie_id>", methods=["GET"])
+def movie_details(movie_id):
+    with make_session() as db_session:
+        movie = db_session.query(Movie).filter(Movie.id == movie_id).first()
+        # If movie not found, return an error page
+        if not movie:
+            return "<h3>Movie not found</h3>", 404
+
+        # Pass the referer URL (previous page) to the template
+        previous_page = request.referrer # Capture the referring page URL    
+        # Pass the movie details to the template
+        return render_template("movie_details.html", movie=movie, previous_page=previous_page)
+
+@app.route("/add_to_list", methods=["GET","POST"])
+def add_to_list():
+    # try:
+    #     movie_id = request.form.get("movie_id")
+    # except (TypeError, ValueError):
+    #     flash("Inalid movie ID.", "Warning")
+    #     return redirect(request.referrer)
+    movie_id = request.form.get("movie_id")
+    if movie_id:
+        with make_session() as db_session:
+            movie = db_session.query(Movie).filter(Movie.id == movie_id).first()
+            if movie:
+                username = session.get("username")
+                user = db_session.query(User).filter(User.username == username).first()
+                if movie not in user.to_watch_list:
+                    user.to_watch_list.append(movie)
+                    db_session.commit()
+                    flash(f"{movie.title} has been added to your 'To Watch' list!", "Success")
+                else:
+                    flash(f"{movie.title} is already on the list", "info")
+            else:
+                flash("Movie not found.", "Error")
+    else:
+        flash("Invalid action.", "Warning")
+    return redirect(request.referrer) # Redirect back to the previous page
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)

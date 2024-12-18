@@ -4,7 +4,6 @@
 <!-- <header>
     <img src="{{ url_for('static', filename='images/lawn.jpeg') }}" alt="Header Image" class="header-image">
 </header> -->
-
 <div class="site-name text-primary text-center bg-dark bg-gradient p-4">
     <div class="container">
         <h1 class="text-white">Movie Progress Tracker</h1>
@@ -46,10 +45,36 @@
                     <td>{{ movie.title }}</td>
                     <td>{{ movie.rating }}</td>
                     <td>{{ movie.release_year }}</td>
+                    <td>
+                        <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="btn btn-info btn-sm">
+                            View Details
+                        </a>
+                    </td>
+                    {% if movie not in planned_watching_movies and movie not in currently_watching_movies and movie not in watched_movies %}
+                        <td>
+                            <form action="{{ url_for('add_to_list') }}" method="POST" style="display: inline;" >
+                                <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                                <button type="submit" class="btn btn-success btn-sm add-btn">
+                                    + Add
+                                </button>
+                            </form>
+                        </td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        <div class="contain text-center">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div>
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </div>
     </div>
     <div class="container mt-5">
         <h5 class="text-enter">Search Movies</h5>
