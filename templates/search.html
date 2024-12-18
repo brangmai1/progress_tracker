@@ -25,10 +25,29 @@
                     <td>
                         <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="btn btn-info btn-sm">View Details</a>
                     </td>
+                    <td>
+                        <form action="{{ url_for('add_to_list') }}" method="POST" style="display: inline;" >
+                            <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                            <button type="submit" class="btn btn-success btn-sm">
+                                + Add
+                            </button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        <div class="contain text-center">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div>
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </div>
     {% else %}
         <p class="text-center mt-4">No results found for "{{ search_type }}".</p>
     {% endif %}

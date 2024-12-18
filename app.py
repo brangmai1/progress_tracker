@@ -64,7 +64,7 @@ def signup():
     # Render the sign up form
     return render_template("signup.html")
 
-@app.route("/home", methods=["GET"])
+@app.route("/home", methods=["GET", "POST"])
 def home():
     username = session.get("username")
     if not username:
@@ -127,6 +127,31 @@ def movie_details(movie_id):
         # Pass the movie details to the template
         return render_template("movie_details.html", movie=movie, previous_page=previous_page)
 
+@app.route("/add_to_list", methods=["GET","POST"])
+def add_to_list():
+    # try:
+    #     movie_id = request.form.get("movie_id")
+    # except (TypeError, ValueError):
+    #     flash("Inalid movie ID.", "Warning")
+    #     return redirect(request.referrer)
+    movie_id = request.form.get("movie_id")
+    if movie_id:
+        with make_session() as db_session:
+            movie = db_session.query(Movie).filter(Movie.id == movie_id).first()
+            if movie:
+                username = session.get("username")
+                user = db_session.query(User).filter(User.username == username).first()
+                if movie not in user.to_watch_list:
+                    user.to_watch_list.append(movie)
+                    db_session.commit()
+                    flash(f"{movie.title} has been added to your 'To Watch' list!", "Success")
+                else:
+                    flash(f"{movie.title} is already on the list", "info")
+            else:
+                flash("Movie not found.", "Error")
+    else:
+        flash("Invalid action.", "Warning")
+    return redirect(request.referrer) # Redirect back to the previous page
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)

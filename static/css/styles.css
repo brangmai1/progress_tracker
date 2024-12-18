@@ -15,7 +15,7 @@ header img {
     background-size: cover; /* Scale the image to cover the header */
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Prevent the image from repeating */
-    height: 300px; /* Set the height of the header */
+    height: 200px; /* Set the height of the header */
     display: flex; /* Center content vertically and horizontally */
     flex-direction: column;
     justify-content: center;
@@ -29,4 +29,7 @@ header img {
 }
 h1, h3, h4, h5 {
     font-weight: bold;
+}
+.hidden {
+    display: none;
 }
