@@ -36,7 +36,6 @@ def login():
             if user and check_password_hash(user.password, password):   
                 # Successful login, redirect to movies page   
                 session["username"] = user.username   
-                flash("Login successful!")
                 return redirect(url_for("home"))
             else:
                 # Invalid login

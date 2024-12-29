@@ -1,35 +1,58 @@
 body {
-    font-family: Arial, Helvetica, sans-serif; 
-    margin: 0;
-    padding: 0;
-    background-color: dark;
+    background-color: #121212;
+    color: #ffffff;
+    font-family: sans-serif;
 }
+/*
+.site-name {
 
-header img {
-    width: 100%; /* Make the image span the full width of the page */
-    height: auto; /* Keep the aspect ratio */
-}
-.headerbackground {
-    /* background-color: burlywood; */
-    background-image: url("../static/images/header.jpeg"); /* Path to your image */
-    background-size: cover; /* Scale the image to cover the header */
-    background-position: center; /* Center the image */
-    background-repeat: no-repeat; /* Prevent the image from repeating */
-    height: 200px; /* Set the height of the header */
-    display: flex; /* Center content vertically and horizontally */
+    background-color: rgb(243, 239, 238);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; 
+    padding: 1rem;
+    text-align: center;
+    color: dark;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: x-large;
+    
+    display: flex; 
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: white; /* Ensure text contrasts with the image */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Add shadow to make text readable */
-    margin: 0; /* Remove default margin */
-}
-.site-name {
-    background-color: burlywood;
-}
-h1, h3, h4, h5 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    margin: 0; 
+}*/
+
+h1, h2, h3, h4, h5 {
     font-weight: bold;
+    color: #f05454;
 }
 .hidden {
     display: none;
+}
+.footer {
+    /* background-image: url("../images/header.jpeg"); */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+button {
+    background-color: #f05454;
+    color: #ffffff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #ff6655;
+}
+
+.container {
+    background-color: #1e1e2f;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
