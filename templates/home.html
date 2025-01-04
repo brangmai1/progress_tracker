@@ -25,7 +25,7 @@
         </div>
     </div>
 </div>
-<section class="bg-light bg-gradient p-5">
+<section class="container bg-light bg-gradient p-4">
     <div class="text-dark text-start">
         <h5>Trending Movies</h5>    
     </div>
@@ -95,7 +95,7 @@
     <div class="container text-center text-dark">
         <h3>My Movie Lists</h3>
         <div class="row">
-            <div class="col-md rounded-2 bg-light text-dark m-3 py-2">
+            <div class="movie-list col-md rounded-2 bg-light text-dark m-3 py-2">
                 <h5>Currently watching Movies</h5>
                 <table class="table">
                     <thead>
@@ -107,10 +107,10 @@
                     <tbody class="text-start">
                         {% if currently_watching_movies %}
                             {% for movie in currently_watching_movies %}
-                            <tr>
-                                <td>{{ loop.index }}</td>
-                                <td>{{ movie.title }}</td>
-                            </tr>
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ movie.title }}</td>
+                                </tr>
                             {% endfor %}
                         {% else %}
                             <tr>
@@ -118,9 +118,16 @@
                             </tr>
                         {% endif %}
                     </tbody>
-                </table>                    
+                </table>  
+                <a href="{{ url_for('edit_list', movies=currently_watching_movies) }}" class="btn btn-primary btn-sm">Edit</a>
+                <!-- <form action="{{ url_for('edit_list') }}" method="POST" class="edit-form">
+                    <input type="hidden" value="{{ currently_watching_movies }}">
+                    <div class="edit-btn">
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                    </div>
+                </form>           -->
             </div>
-            <div class="col-md rounded-2 bg-light text-dark m-3 py-2">
+            <div class=" movie-list col-md rounded-2 bg-light text-dark m-3 py-2">
                 <h5>Planned to Watch Movies</h5>
                 <table class="table">
                     <thead>
@@ -144,8 +151,16 @@
                         {% endif %}
                     </tbody>
                 </table>
+                <!-- Edit button -->
+                <a href="{{ url_for('edit_list', movies=planned_watching_movies) }}" class="btn btn-primary btn-sm">Edit</a>
+                <!-- <form action="{{ url_for('edit_list') }}" method="POST" class="edit-form">
+                    <input type="hidden" value="{{ planned_watching_movies }}">
+                    <div class="edit-btn">
+                        <button type="submit" class="btn btn-primary mt-auto">Edit</button>
+                    </div>
+                </form> -->
             </div>
-            <div class="col-md rounded-2 bg-light text-dark m-3 py-2">
+            <div class="movie-list col-md rounded-2 bg-light text-dark m-3 py-2">
                 <h5>Watched Movies</h5>
                 <table class="table">
                     <thead>
@@ -157,10 +172,10 @@
                     <tbody class="text-start">
                         {% if watched_movies %}
                             {% for movie in watched_movies %}
-                            <tr>
-                                <td>{{ loop.index }}</td>
-                                <td>{{ movie.title }}</td>
-                            </tr>
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ movie.title }}</td>
+                                </tr>
                             {% endfor %}
                         {% else %}
                             <tr>
@@ -168,11 +183,18 @@
                             </tr>
                         {% endif %}
                     </tbody>
-                </table>                    
+                </table> 
+                <a href="{{ url_for('edit_list') }}" class="btn btn-primary btn-sm">Edit</a>
+                <!-- <form action="{{ url_for('edit_list') }}" method="POST" class="edit-form">
+                    <input type="hidden" value="{{ watched_movies }}">
+                    <div class="edit-btn">
+                        <button type="submit" class="btn btn-primary mt-auto">Edit</button>
+                    </div>
+                </form>                    -->
             </div>
         </div>
     </div>
-    <div class="container text-start text-white mt-2">
+    <div class="text-start text-white m-4">
         <p>All rights reserved.</p>
     </div>
 </section>

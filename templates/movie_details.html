@@ -1,15 +1,47 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="container">
+<div class="details-container p-2 m-4">
     <div class="card">
-        <div class="card-header bg-dark text-white">
-            <h2>{{ movie.title }}</h2>
+        <div class="card-header text-center">
+            <h2>Movie Details</h2>
         </div>
-        <div class="card-body">
+        <div class="card-body container-fluid">
             <!-- <p><srong>Genre:</srong> {{ movie.genres.genre_type }}</p> -->
-            <p><strong>Description:</strong>{{ movie.description }}</p>
-            <p><strong>Rating:</strong>{{ movie.rating }}</p>
-            <p><strong>Released Year:</strong>{{ movie.release_year }}</p>
+             <div class="row">
+                <div class="col-sm-2">
+                    <p><strong>Title:</strong></p>
+                </div>
+                <div class="col-sm-10">
+                    <p><strong>{{ movie.title }}</strong></p>
+                </div>
+             </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <p><strong>Description:</strong></p>
+                </div>
+                <div class="col-sm-10">
+                    <p>{{ movie.description }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <p><strong>Rating:</strong></p>
+                </div>
+                <div class="col-sm-10">
+                    <p>{{ movie.rating }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <p><strong>Released Year:</strong></p>
+                </div>
+                <div class="col-sm-10">
+                    <p>{{ movie.release_year }}</p>
+                </div>
+            </div>
+            <!-- <p><strong>Description: </strong>{{ movie.description }}</p> -->
+            <!-- <p><strong>Rating: </strong>{{ movie.rating }}</p> -->
+            <!-- <p><strong>Released Year: </strong>{{ movie.release_year }}</p> -->
         </div>
         <div class="card-footer">
             {% if previous_page %}

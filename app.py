@@ -8,6 +8,7 @@ import os
 import pandas as pd
 import re
 from initial_setup import setup_table_data
+import json
 
 ADMINS = ["brangmai@email.com"]
 app = Flask(__name__)
@@ -158,6 +159,7 @@ def movie_details(movie_id):
         # Pass the movie details to the template
         return render_template("movie_details.html", movie=movie, previous_page=previous_page)
 
+    
 @app.route("/add_to_list", methods=["GET","POST"])
 def add_to_list():
     # try:
@@ -183,6 +185,65 @@ def add_to_list():
     else:
         flash("Invalid action.", "Warning")
     return redirect(request.referrer) # Redirect back to the previous page
+
+
+@app.route("/edit", methods=["GET"])
+def edit_list():
+    username = session.get("username")
+    with make_session() as db_session:
+        db_user = db_session.query(User).filter(User.username == username).first()
+        currently_watching_movies = db_user.watching_list
+        planned_watching_movies = db_user.to_watch_list
+        watched_movies = db_user.watched_list  
+    previous = request.referrer
+    return render_template("edit_list.html", previous=previous, currently_watching_movies=currently_watching_movies, planned_watching_movies=planned_watching_movies, watched_movies=watched_movies)
+
+@app.route("/remove", methods=["POST"])
+def remove():
+    movie_id = request.form.get("movie_id")
+    list_type = request.form.get("list_type")
+
+    if not movie_id or not list_type:
+        flash("Invalid request. Missing data.", "warning")
+
+    username = session.get("username")
+    if not username:
+        flash("Please, log in to continue.", "danger")
+        return redirect(url_for("login"))
+    
+    with make_session() as db_session:
+        user = db_session.query(User).filter(User.username == username).first()
+        if not user:
+            flash("User not found", "danger")
+            return redirect(url_for("login"))
+        movie = db_session.query(Movie).filter(Movie.id == movie_id).first()
+        if not movie:
+            flash("Movie not found", "danger")
+        if list_type == "currently_watching_movies":
+            if movie in user.watching_list:
+                user.watching_list.remove(movie)
+                flash(f"Removed '{movie.title}' from Currently Watching List.", 'success')
+            else:
+                flash(f"'{movie.title}' is not in your Currently Watching List", "info")
+        elif list_type == "planned_watching_movies":
+            if movie in user.to_watch_list:
+                user.to_watch_list.remove(movie)
+                flash(f"Removed '{movie.title}' from Planned Watching List", "success")
+            else:
+                flash(f"'{movie.title}' is not in your Planned Watching list.", "info")
+        elif list_type == "watched_movies":
+            if movie in user.watched_list:
+                user.watched_list.remove(movie)
+                flash(f"Removed '{movie.title}' from Watched list.", "success")
+            else:
+                flash(f"'{movie.title}' is not in your Watched list.", "info")
+        else:
+            flash("Invalid list type specified.", "danger")
+        db_session.commit()
+    # previous = request.referrer
+    # return redirect(url_for('edit_list'), previous=previous)
+    return redirect(url_for('edit_list'))
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)
