@@ -82,15 +82,15 @@ Welcome to the Movie Progress Tracker! This full-stack web application helps use
 ## Project Structure
 
 	movie-progress-tracker/
-	├── connect_database.py       # Database connection setup
-	├── initial_setup.py          # Setup tables and initial data
-	├── insert_data.py	      	  # Insert initial data to the database
-	├── tables.py                 # ORM models for Users, Movies, Genres, etc.
-	├── setup_user_account.py     # User account setup                 
-	├── main.py                   # Entry point to run the application
-	├── .env					  # Enviroment variables
-	├── requirements.txt		  # Python dependentcies
-	└── README.md                 # Project documentation
+	├── connect_database.py		# Database connection setup
+	├── initial_setup.py		# Setup tables and initial data
+	├── insert_data.py		# Insert initial data to the database
+	├── tables.py			# ORM models for Users, Movies, Genres, etc.
+	├── setup_user_account.py	# User account setup                 
+	├── main.py			# Entry point to run the application
+	├── .env			# Enviroment variables
+	├── requirements.txt		# Python dependentcies
+	└── README.md			# Project documentation
 
 ## Future Improvements
 - Movie Recommendations: Recommend movies based on user preferences and watch history. 
