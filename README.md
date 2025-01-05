@@ -61,9 +61,13 @@ Welcome to the Movie Progress Tracker! This full-stack web application helps use
 	- Add the following key-value pairs to the .env file, and update the values with your own information.
 
 		DB_NAME=my_database
+
 		DB_USER=my_user
+
 		DB_PASSWORD=my_password
+
 		DB_HOST=localhost
+
 		DB_PORT=3306
 
 
