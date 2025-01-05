@@ -1,6 +1,6 @@
 # Movie Progress Tracker
 
-Welcome to the Movie Progress Tracker! This full-stack web application helps users manage and track their movie-watching progress. Organize your movies into different lists, such as "To Watch", "Watching", and "Watched", and interact with an intuitive front-end interface. Admins can monitor user activities and manage the movie database.
+Welcome to the Movie Progress Tracker! This full-stack web application helps users manage and track their movie-watching progress. Organize your movies into different lists, such as "**To Watch**", "**Watching**", and "**Watched**", and interact with an intuitive front-end interface. Admins can monitor user activities and manage the movie database.
 
 ## Table of Contents
 - Features
@@ -11,21 +11,21 @@ Welcome to the Movie Progress Tracker! This full-stack web application helps use
 - Future Improvements
 
 ## User Features
-#### User Accounts: Create and log in securely with unique usernames and passwords.
-#### Movie Tracking: Manage movies across three categories:
+**User Accounts**: Create and log in securely with unique usernames and passwords.
+**Movie Tracking**: Manage movies across three categories:
 - Watching: Movies the user is currently watching.
 - To Watch: Movies the user plans to watch.
 - Watched: Movies the user has finished watching.
-#### Interactive UI: A dynamic front-end interface for seamless user interaction.
-#### Movie List Management: Easily add, update or remove movies from any tracking category.
-#### Account settings: Update profile details, including passwords, names, and email addresses.
-#### Search by Title: Quickly locate movies using their titles.
-#### Search by Genre: Discover movies base on specific genres.
-#### Password Protection: Ensure secure login with password masking during input.
+**Interactive UI**: A dynamic front-end interface for seamless user interaction.
+**Movie List Management**: Easily add, update or remove movies from any tracking category.
+**Account settings**: Update profile details, including passwords, names, and email addresses.
+**Search by Title**: Quickly locate movies using their titles.
+**Search by Genre**: Discover movies base on specific genres.
+**Password Protection**: Ensure secure login with password masking during input.
 
 ## Admin Features
-#### Admin Dashboard: An admin account can monitor and manage user accounts and their movie lists.
-#### Database Management: Add, edit, or delete movies in the database.
+**Admin Dashboard**: An admin account can monitor and manage user accounts and their movie lists.
+**Database Management**: Add, edit, or delete movies in the database.
 
 ## Tech Stack
 #### Back-End
@@ -40,13 +40,15 @@ Welcome to the Movie Progress Tracker! This full-stack web application helps use
 
 ## Installation 
 ### Prerequisities
-- python_version >= 3.13
-- MySQL (or an alternative SQL-Compatible database)
+> - python_version >= 3.13
+>
+> -  MySQL (or an alternative SQL-Compatible database)
 
 ### Steps 
 1. Clone this repository:
 
 		- git clone https://github.com/Future-Horizons-Python-Sept-2024/pep-progress-tracker-brangmai1.git
+
 		- cd pep-progress-tracker-brangmai1
 
 2. Install dependencies:
@@ -57,6 +59,7 @@ Welcome to the Movie Progress Tracker! This full-stack web application helps use
 	- Create a new MySQL database or your favorite DBMS.
 	- Add .env file to the project, outside the static or templates folders.
 	- Add the following key-value pairs to the .env file, and update the values with your own information.
+
 		DB_NAME=my_database
 		DB_USER=my_user
 		DB_PASSWORD=my_password
@@ -69,9 +72,11 @@ Welcome to the Movie Progress Tracker! This full-stack web application helps use
 1. Start the main application:
 
    		- python main.py
+
 	or
+
 		- flask run
-2. Open your browser and navigate to http://127.0.0.1:5000.	
+2. Open your browser and navigate to **http://127.0.0.1:5000**.	
 3. Sign up as a new user or sign in to an existing account.
 4. User Features: Once signed in, you can:
 	- Add movies to your To Watch, Watching, or Watched lists.
