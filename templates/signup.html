@@ -1,9 +1,54 @@
 {% extends "layout.html" %}
 {% block content %}
+<div class="site-name text-center p-4">
+    <h1>Movie Progress Tracker</h1>    
+</div>
 
-<div class="container mt-5">
-    <h1 class="mb-4">Sign UP</h1>
-    <form action="/signup" method="POST">
+<!-- Sign-In Box -->
+<div class="container mt-4 p-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="mb-4 text-center text-dark">Sign up to Movie Tracker</h5>
+                    <form action="/signup" method="POST" onsubmit="return password_validation()">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Passworde</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label"> Confirm passworde</label>
+                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Re-enter password" required>
+                        </div>
+                        <div id="error-message" class="text-danger"></div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Sign up</button>
+                        </div>
+                    </form>                                           
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- version-1
+
+<div class="container p-4">
+    <h1 class="mb-4 text-center">Sign up to Movie Tracker</h1>
+    <form action="/signup" method="POST" onsubmit="return password_validation()">
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
             <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
@@ -13,6 +58,11 @@
             <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
         </div>
         <div class="mb-3">
+            <label for="password" class="form-label"> Confirm passworde</label>
+            <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Re-enter password" required>
+        </div>
+        <div id="error-message" class="text-danger"></div>
+        <div class="mb-3">
             <label for="name" class="form-label">Name</label>
             <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" required>
         </div>
@@ -20,12 +70,42 @@
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
         </div>
-        <!-- Sign Up Button -->
         <div class="d-grid">
-            <button type="submit" class="btn btn-primary">Sign Up</button>
+            <button type="submit" class="btn btn-primary">Sign up</button>
         </div>
     </form>
-</div>
+</div> -->
+<script>
+    function password_validation() {
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirm_password").value;
+        const errorMessage = document.getElementById("error-message");
 
+        // Check password
+        if(password.length < 8) {
+            errorMessage.textContent = "Password must be at least 8 characters long.";
+            return false;
+        }
+        if(!/[a-z]/.test(password)) {
+            errorMessage.textContent = "Password must contain at least one lowercase letter.";
+            return false;
+        }
+        if(!/[A-Z]/.test(password)) {
+            errorMessage.textContent = "Password must contain at least one uppercase letter.";
+            return false;
+        }
+        if(!/[0-9]/.test(password)) {
+            errorMessage.textContent = "Password must contain at least one digit.";
+            return false;
+        }
+        if(password !== confirmPassword) {
+            errorMessage.textContent = "Passwords do not match."
+            return false;
+        }
+
+        errorMessage.textContent = "";
+        return true;
+    }
+</script>
 
 {% endblock %}

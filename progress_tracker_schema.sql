@@ -41,10 +41,10 @@ CREATE TABLE movie_genre (
 -- DROP TABLE IF EXISTS users;
 -- users table
 CREATE TABLE users (
-	username VARCHAR(25) PRIMARY KEY,
-    password VARCHAR(25) UNIQUE NOT NULL,
-    name VARCHAR(25),
-    email VARCHAR(30)
+	username VARCHAR(50) PRIMARY KEY,
+    password VARCHAR(256) UNIQUE NOT NULL,
+    name VARCHAR(50),
+    email VARCHAR(254)
 );
 
 DROP TABLE IF EXISTS user_movie_to_watch;

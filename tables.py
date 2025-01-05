@@ -66,10 +66,10 @@ class Genre(Base):
 # User class
 class User(Base):
     __tablename__ = "users"
-    username = Column(String (15), primary_key=True)
-    password = Column(String (25), nullable=False)
-    name = Column(String (25), nullable=False)
-    email = Column(String (25), nullable=True)
+    username = Column(String (50), primary_key=True)
+    password = Column(String (256), nullable=False)
+    name = Column(String (50), nullable=False)
+    email = Column(String (254), nullable=True)
     role = Column(String(10), default="user")
     watching_list = relationship("Movie", secondary="user_movie_watching", back_populates="current_list")
     to_watch_list = relationship("Movie", secondary="user_movie_to_watch", back_populates="future_list")

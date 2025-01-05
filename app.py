@@ -1,10 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
+from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import timedelta
 from connect_database import make_session
 from search_movie import get_movie_df
 from tables import User, Movie, Genre
 import os
 import pandas as pd
+import re
+from initial_setup import setup_table_data
+import json
 
 ADMINS = ["brangmai@email.com"]
 app = Flask(__name__)
@@ -13,37 +17,65 @@ app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=30) # Prevents stal
 
 @app.route("/", methods=["GET"])
 def index():
-    return render_template("index.html")
-    
-@app.route("/login", methods=["POST"])
-def login():
-    # Get data from the form
-    username = request.form["username"]
-    password = request.form["password"]
-
     with make_session() as db_session:
-        user = db_session.query(User).filter(User.username == username).first()        
-        if user and user.password == password:   
-            # Successful login, redirect to movies page   
-            session["username"] = user.username   
-            return redirect(url_for("home"))
-        else:
-            # Invalid login
-            flash("Invalid credentials. Please try again.")
-            return redirect(url_for("login"))
+        setup_table_data(db_session)
+    # return render_template("index.html")
+    return render_template("login.html")
+    
+@app.route("/login", methods=["GET","POST"])
+def login():
+    if request.method == "GET":
+        # Render the login form
+        return render_template("login.html")
+    elif request.method == "POST":
+        # Get data from the form
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        with make_session() as db_session:
+            user = db_session.query(User).filter(User.username == username).first()        
+            if user and check_password_hash(user.password, password):   
+                # Successful login, redirect to movies page   
+                session["username"] = user.username   
+                return redirect(url_for("home"))
+            else:
+                # Invalid login
+                flash("Invalid credentials. Please try again.")
+                return redirect(url_for("login"))
         
 @app.route("/logout", methods=["POST"])
 def logout():
     session.clear() # Clear Flask session
     flash("Logged out seuccessfully.")
-    return redirect(url_for("index"))
+    return redirect(url_for("login"))
 
         
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
+        username = request.form.get("username")
+        password = request.form.get("password")
+       
+        # Password validation check
+        if len(password) < 8:
+            flash("Password must be at least 8 characterslong.", "danger")
+            return redirect(url_for("signup"))
+        if not re.search(r"[A-Z]", password):
+            flash("Password must contain at least one uppercase letter.", "danger")
+            return redirect(url_for("signup"))
+        if not re.search(r"[a-z]", password):
+            flash("Password must contain at least one lowercase letter.", "danger")
+            return redirect(url_for("signup"))
+        if not re.search(r"[0-9]", password):
+            flash("Password must contain at least one digit.", "danger")
+            return redirect(url_for(signup))
+        
+        confirm_password = request.form.get("confirm_password")
+        if password != confirm_password:
+            flash("Passwords do not match.", "danger")
+            return redirect(url_for("signup"))
+        
+        hash_password = generate_password_hash(password, method="pbkdf2:sha256", salt_length=16)
         name = request.form["name"]
         email = request.form["email"]
         with make_session() as db_session:
@@ -52,17 +84,17 @@ def signup():
             if existing_user:
                 flash("Username or email already exists. Please choose another.", "error")
                 return redirect(url_for("signup"))
-            new_user = User(username=username, password=password, name=name, email=email)
+            new_user = User(username=username, password=hash_password, name=name, email=email)
             if new_user.email in ADMINS:
                 new_user.role = "admin"
             db_session.add(new_user)
             db_session.commit()
             session["username"] = username
             flash("Sign-up successful!")
-            return redirect((url_for("home")))
-        
+            return redirect((url_for("login")))        
     # Render the sign up form
     return render_template("signup.html")
+    
 
 @app.route("/home", methods=["GET", "POST"])
 def home():
@@ -127,6 +159,7 @@ def movie_details(movie_id):
         # Pass the movie details to the template
         return render_template("movie_details.html", movie=movie, previous_page=previous_page)
 
+    
 @app.route("/add_to_list", methods=["GET","POST"])
 def add_to_list():
     # try:
@@ -152,6 +185,65 @@ def add_to_list():
     else:
         flash("Invalid action.", "Warning")
     return redirect(request.referrer) # Redirect back to the previous page
+
+
+@app.route("/edit", methods=["GET"])
+def edit_list():
+    username = session.get("username")
+    with make_session() as db_session:
+        db_user = db_session.query(User).filter(User.username == username).first()
+        currently_watching_movies = db_user.watching_list
+        planned_watching_movies = db_user.to_watch_list
+        watched_movies = db_user.watched_list  
+    previous = request.referrer
+    return render_template("edit_list.html", previous=previous, currently_watching_movies=currently_watching_movies, planned_watching_movies=planned_watching_movies, watched_movies=watched_movies)
+
+@app.route("/remove", methods=["POST"])
+def remove():
+    movie_id = request.form.get("movie_id")
+    list_type = request.form.get("list_type")
+
+    if not movie_id or not list_type:
+        flash("Invalid request. Missing data.", "warning")
+
+    username = session.get("username")
+    if not username:
+        flash("Please, log in to continue.", "danger")
+        return redirect(url_for("login"))
+    
+    with make_session() as db_session:
+        user = db_session.query(User).filter(User.username == username).first()
+        if not user:
+            flash("User not found", "danger")
+            return redirect(url_for("login"))
+        movie = db_session.query(Movie).filter(Movie.id == movie_id).first()
+        if not movie:
+            flash("Movie not found", "danger")
+        if list_type == "currently_watching_movies":
+            if movie in user.watching_list:
+                user.watching_list.remove(movie)
+                flash(f"Removed '{movie.title}' from Currently Watching List.", 'success')
+            else:
+                flash(f"'{movie.title}' is not in your Currently Watching List", "info")
+        elif list_type == "planned_watching_movies":
+            if movie in user.to_watch_list:
+                user.to_watch_list.remove(movie)
+                flash(f"Removed '{movie.title}' from Planned Watching List", "success")
+            else:
+                flash(f"'{movie.title}' is not in your Planned Watching list.", "info")
+        elif list_type == "watched_movies":
+            if movie in user.watched_list:
+                user.watched_list.remove(movie)
+                flash(f"Removed '{movie.title}' from Watched list.", "success")
+            else:
+                flash(f"'{movie.title}' is not in your Watched list.", "info")
+        else:
+            flash("Invalid list type specified.", "danger")
+        db_session.commit()
+    # previous = request.referrer
+    # return redirect(url_for('edit_list'), previous=previous)
+    return redirect(url_for('edit_list'))
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)

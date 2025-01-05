@@ -1,0 +1,147 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="content">
+    <div class="container">
+        <div class="site-name text-center bg-gradient m-3 p-3">
+            <h1 class="text-center">Edit Movie List</h1>
+        </div>
+        <h5>Currently Watching Movies</h5>
+        <div class="result-container">
+            {% if currently_watching_movies %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Rating</th>
+                        <th>Released Year</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for movie in currently_watching_movies %}
+                    <tr>
+                        <td>{{ movie.id }}</td>
+                        <td>{{ movie.title }}</td>
+                        <td>{{ movie.rating }}</td>
+                        <td>{{ movie.release_year }}</td>
+                        <td>
+                            <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="btn btn-info btn-sm">View Details</a>
+                        </td>
+                        <td>
+                            <form action="{{ url_for('remove') }}" method="POST" style="display: inline;" >
+                                <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                                <input type="hidden" name="list_type", value="currently_watching_movies">
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    Remove
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-center mt-4">No movie on the list.</p>
+        {% endif %}
+        </div>
+        <h5>Planned Watching Movies</h5>
+        <div class="result-container">
+            {% if planned_watching_movies %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Rating</th>
+                        <th>Released Year</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for movie in planned_watching_movies %}
+                    <tr>
+                        <td>{{ movie.id }}</td>
+                        <td>{{ movie.title }}</td>
+                        <td>{{ movie.rating }}</td>
+                        <td>{{ movie.release_year }}</td>
+                        <td>
+                            <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="btn btn-info btn-sm">View Details</a>
+                        </td>
+                        <td>
+                            <form action="{{ url_for('remove') }}" method="POST" style="display: inline;" >
+                                <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                                <input type="hidden" name="list_type", value="planned_watching_movies">
+                                
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    Remove
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-center mt-4">No movie on the list.</p>
+        {% endif %}
+        </div>
+        <h5>Watched Movies</h5>
+        <div class="result-container">
+            {% if watched_movies %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Rating</th>
+                        <th>Released Year</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for movie in watched_movies %}
+                    <tr>
+                        <td>{{ movie.id }}</td>
+                        <td>{{ movie.title }}</td>
+                        <td>{{ movie.rating }}</td>
+                        <td>{{ movie.release_year }}</td>
+                        <td>
+                            <a href="{{ url_for('movie_details', movie_id=movie.id) }}" class="btn btn-info btn-sm">View Details</a>
+                        </td>
+                        <td>
+                            <form action="{{ url_for('remove') }}" method="POST" style="display: inline;" >
+                                <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                                <input type="hidden" name="list_type", value="watched_movies">
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    Remove
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-center mt-4">No movie on the list.</p>
+        {% endif %}
+        </div>
+        <div class="contain text-center">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div>
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </div>
+        <div class="card-footer">
+            <!-- {% if previous %}
+                <a href="{{ previous }}" class="btn btn-secondary">Back</a>
+            {% else %}
+                <a href="{{ url_for('home') }}" class="btn btn-secondary">Back to Home</a>
+            {% endif %} -->
+            <a href="{{ url_for('home') }}" class="btn btn-secondary">Back to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
