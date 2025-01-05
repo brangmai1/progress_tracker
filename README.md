@@ -1,6 +1,6 @@
 # Movie Progress Tracker
 
-Welcome to the Movie Progress Tracker! This application helps users manage and track their movie-watching progress by organizing movies into different lists, such as To Watch, Watching, and Watched. It also includes an admin feature to oversee users' progress and manage the movie database.
+Welcome to the Movie Progress Tracker! This full-stack web application helps users manage and track their movie-watching progress. Organize your movies into different lists, such as "To Watch", "Watching", and "Watched", and interact with an intuitive front-end interface. Admins can monitor user activities and manage the movie database.
 
 ## Table of Contents
 - Features
@@ -10,23 +10,33 @@ Welcome to the Movie Progress Tracker! This application helps users manage and t
 - Project Structure
 - Future Improvements
 
-## Features
-#### User Accounts: Users can create accounts and log in securely with a unique username and password.
-#### Movie Tracking: manage movies across three categories:
-- Watching: Movies the user is currently watching
-- To Watch: Movies the user plans to watch
-- Watched: Movies the user has finished watching
+## User Features
+#### User Accounts: Create and log in securely with unique usernames and passwords.
+#### Movie Tracking: Manage movies across three categories:
+- Watching: Movies the user is currently watching.
+- To Watch: Movies the user plans to watch.
+- Watched: Movies the user has finished watching.
+#### Interactive UI: A dynamic front-end interface for seamless user interaction.
 #### Movie List Management: Easily add, update or remove movies from any tracking category.
 #### Account settings: Update profile details, including passwords, names, and email addresses.
-#### Admin Dashboard: An admin account can monitor and manage user accounts and their movie lists.
 #### Search by Title: Quickly locate movies using their titles.
 #### Search by Genre: Discover movies base on specific genres.
 #### Password Protection: Ensure secure login with password masking during input.
 
+## Admin Features
+#### Admin Dashboard: An admin account can monitor and manage user accounts and their movie lists.
+#### Database Management: Add, edit, or delete movies in the database.
+
 ## Tech Stack
-#### Backend: Python, SQLAlchemy ORM
-#### Database: MySQL (or your preferred relational database)
-#### Other Libraries: Pandas(for data manipulation and analysis)
+#### Back-End
+- Flask: Python web framework for handling server-side logic.
+- SQLAlchemy: ORM for database interactions.
+- MySQL: relational database to store user and movie data.
+
+#### Front-End
+- HTML5: Markup for structure and content.
+- CSS3: Styling with custom themes and responsiveness.
+- Bootstrap: Predefined components for a polished UI.
 
 ## Installation 
 ### Prerequisities
@@ -43,8 +53,8 @@ Welcome to the Movie Progress Tracker! This application helps users manage and t
 
 		- pip install -r requirements.txt
 	
-3. Set up your MySQL database
-	- Create a new MySQL database name on MySQLWorkbench or your favorite DBMS.
+3. Configure the database:
+	- Create a new MySQL database or your favorite DBMS.
 	- Add .env file to the project, outside the static or templates folders.
 	- Add the following key-value pairs to the .env file, and update the values with your own information.
 		DB_NAME=my_database
@@ -59,29 +69,33 @@ Welcome to the Movie Progress Tracker! This application helps users manage and t
 1. Start the main application:
 
    		- python main.py
-   
-2. Sign up as a new user or sign in to an existing account.
-3. User Features: Once signed in, you can:
+	or
+		- flask run
+2. Open your browser and navigate to http://127.0.0.1:5000.	
+3. Sign up as a new user or sign in to an existing account.
+4. User Features: Once signed in, you can:
 	- Add movies to your To Watch, Watching, or Watched lists.
-	- Update status or delete movies from your movie lists.
-	- View movie lists and track your watching progress.
-	- Search movies by movie or genre.
+	- Update or remove movies from your lists.
+	- Search for movies by title, genre or trend.
+5. Admin users can access the admin dashboard to manage users and movies.
 
 ## Project Structure
 
 	movie-progress-tracker/
 	├── connect_database.py       # Database connection setup
 	├── initial_setup.py          # Setup tables and initial data
-	├── insert_data.py	      # Insert initial data to the database
+	├── insert_data.py	      	  # Insert initial data to the database
 	├── tables.py                 # ORM models for Users, Movies, Genres, etc.
 	├── setup_user_account.py     # User account setup                 
 	├── main.py                   # Entry point to run the application
+	├── .env					  # Enviroment variables
+	├── requirements.txt		  # Python dependentcies
 	└── README.md                 # Project documentation
 
 ## Future Improvements
-- Movie Recommendations: Recommend movies based on the user's genre preferences. 
-- Front-End Interface: Develop an intuitive front-end to simplify user interactions and enhance the overall experience. 
-- Social Sharing: Allow users to share their progress with friennds.
+- Movie Recommendations: Recommend movies based on user preferences and watch history. 
+- Social Sharing: Allow users to share their progress with friends.
+
 
 
 
