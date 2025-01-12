@@ -1,1 +1,8 @@
 .env
+myVenv
+clean_data.ipynb
+PythonPEPinstructions.pdf
+original_best_movies.csv
+__pycache__/
+*.pyc
+

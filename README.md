@@ -65,9 +65,9 @@ Welcome to the Movie Progress Tracker! This full-stack web application helps use
 ### Steps 
 1. Clone this repository:
 
-		- git clone https://github.com/Future-Horizons-Python-Sept-2024/pep-progress-tracker-brangmai1.git
+		- git clone https://github.com/brangmai1/progress_tracker
 
-		- cd pep-progress-tracker-brangmai1
+		- cd progress_tracker
 
 2. Install dependencies:
 
