@@ -8,12 +8,14 @@ import os
 import pandas as pd
 import re
 from initial_setup import setup_table_data
-import json
+from config import config
 
 ADMINS = ["brangmai@email.com"]
 app = Flask(__name__)
 app.secret_key = os.urandom(24) # Generates a 24-byte random key
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=30) # Prevents stale connections for both flask and database sessions
+# app.config.from_object(config[os.getenv("FLASK_ENV", "production")])
+
 
 @app.route("/", methods=["GET"])
 def index():
@@ -246,4 +248,5 @@ def remove():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    # app.run(debug=True, port=5001)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
